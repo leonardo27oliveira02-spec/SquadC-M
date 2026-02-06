@@ -476,16 +476,17 @@ const BIBLIOTECA_CONHECIMENTO = {
 };
 
 // Continua no próximo arquivo...
-        class AvaliacaoDesempenho {
-            constructor() {
-                this.paginaAtual = 'home';
-                this.metaMensal = 450000;
-                this.colaboradores = [];
-                this.colaboradorSelecionado = null;
-                this.colaboradorEditando = null;
-                
-                this.render();
-            }
+class AvaliacaoDesempenho {
+    constructor() {
+        this.paginaAtual = 'home';
+        this.metaMensal = 450000;
+        this.colaboradores = [];
+        this.colaboradorEditando = null;
+        this.guiaAberto = null;
+        
+        this.carregarDados();
+        this.render();
+    }
 
             // ===== GESTÃO DE COLABORADORES =====
             
