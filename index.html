@@ -79,16 +79,19 @@
     <div id="app"></div>
 
     <script>
-        class AvaliacaoDesempenho {
-            constructor() {
-                this.paginaAtual = 'home';
-                this.metaMensal = 450000;
-                this.colaboradores = [];
-                this.colaboradorSelecionado = null;
-                this.colaboradorEditando = null;
-                
-                this.render();
-            }
+        // PARTE 2 - LÓGICA DA APLICAÇÃO
+
+class AvaliacaoDesempenho {
+    constructor() {
+        this.paginaAtual = 'home';
+        this.metaMensal = 450000;
+        this.colaboradores = [];
+        this.colaboradorEditando = null;
+        this.guiaAberto = null;
+        
+        this.carregarDados();
+        this.render();
+    }
 // ===== BIBLIOTECA DE CONHECIMENTO PARA LÍDERES =====
 
 const BIBLIOTECA_CONHECIMENTO = {
@@ -486,19 +489,7 @@ const BIBLIOTECA_CONHECIMENTO = {
 };
 
 // Continua no próximo arquivo...
-      // PARTE 2 - LÓGICA DA APLICAÇÃO
 
-class AvaliacaoDesempenho {
-    constructor() {
-        this.paginaAtual = 'home';
-        this.metaMensal = 450000;
-        this.colaboradores = [];
-        this.colaboradorEditando = null;
-        this.guiaAberto = null;
-        
-        this.carregarDados();
-        this.render();
-    }
 
     // ===== GESTÃO DE COLABORADORES =====
     
