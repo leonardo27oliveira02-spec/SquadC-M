@@ -1,3 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Desempenho - Squad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --cor-laranja: #D97B3A;
+            --cor-escuro: #8B5A3C;
+            --cor-clara: #F4E4D7;
+        }
+        .bg-cm-laranja { background-color: var(--cor-laranja); }
+        .bg-cm-escuro { background-color: var(--cor-escuro); }
+        .text-cm-laranja { color: var(--cor-laranja); }
+        .text-cm-escuro { color: var(--cor-escuro); }
+        .border-cm-laranja { border-color: var(--cor-laranja); }
+        
+        .card-ferramenta {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .card-ferramenta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .matriz-box {
+            border: 2px solid #D97B3A;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+        
+        .feedback-step {
+            background: linear-gradient(135deg, #D97B3A, #8B5A3C);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .competencia-badge {
+            background: #F4E4D7;
+            border: 2px solid #D97B3A;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #8B5A3C;
+        }
+        
+        .avaliacao-360 {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        
+        .circulo-360 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid #D97B3A;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app"></div>
+
+    <script>
+        class AvaliacaoDesempenho {
+            constructor() {
+                this.paginaAtual = 'home';
+                this.metaMensal = 450000;
+                this.colaboradores = [];
+                this.colaboradorSelecionado = null;
+                this.colaboradorEditando = null;
+                
+                this.render();
+            }
 // ===== BIBLIOTECA DE CONHECIMENTO PARA LÍDERES =====
 
 const BIBLIOTECA_CONHECIMENTO = {
@@ -395,7 +486,7 @@ const BIBLIOTECA_CONHECIMENTO = {
 };
 
 // Continua no próximo arquivo...
-                    // PARTE 2 - LÓGICA DA APLICAÇÃO
+      // PARTE 2 - LÓGICA DA APLICAÇÃO
 
 class AvaliacaoDesempenho {
     constructor() {
@@ -766,7 +857,54 @@ class AvaliacaoDesempenho {
     }
 
     // Continua na parte 3...
-}
 
-// Inicializa o app
-const app = new AvaliacaoDesempenho();
+            // ===== FUNÇÕES AUXILIARES =====
+
+            atualizarMeta() {
+                const valor = parseFloat(document.getElementById('inputMeta').value);
+                if (valor > 0) {
+                    this.metaMensal = valor;
+                    this.salvarDados();
+                    alert('✅ Meta atualizada com sucesso!');
+                    this.render();
+                } else {
+                    alert('❌ Digite um valor válido!');
+                }
+            }
+
+            exportarDados() {
+                const dados = {
+                    metaMensal: this.metaMensal,
+                    colaboradores: this.colaboradores,
+                    exportadoEm: new Date().toISOString()
+                };
+                
+                const dataStr = JSON.stringify(dados, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `avaliacao-squad-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                alert('✅ Dados exportados com sucesso!');
+            }
+
+            limparDados() {
+                if (confirm('⚠️ ATENÇÃO! Isso irá apagar TODOS os dados. Deseja continuar?')) {
+                    if (confirm('Confirma a exclusão de TODOS os colaboradores e configurações?')) {
+                        localStorage.clear();
+                        this.colaboradores = [];
+                        this.metaMensal = 450000;
+                        alert('✅ Todos os dados foram apagados!');
+                        this.paginaAtual = 'home';
+                        this.render();
+                    }
+                }
+            }
+        }
+
+        const app = new AvaliacaoDesempenho();
+    </script>
+</body>
+</html>
