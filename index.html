@@ -110,540 +110,138 @@
 
 
             // ============= GUIAS EDUCATIVOS =============
-            
-            carregarGuias() {
-                return {
-                    kpis: {
-                        titulo: "📊 KPIs - Como Medir Desempenho",
-                        conteudo: `
-                            <h3 class="text-2xl font-bold mb-4">1. ENTREGAS (%)</h3>
-                            <div class="dica-box">
-                                <strong>💡 Fórmula:</strong> (Tarefas Concluídas / Tarefas Previstas) × 100
-                                <br><strong>Exemplo:</strong> 8 de 10 tarefas = 80%
-                            </div>
-                            <div class="exemplo-box">
-                                <strong>Como Coletar:</strong>
-                                <ul class="ml-4 mt-2 space-y-1">
-                                    <li>• Use Trello/Notion/Google Tasks</li>
-                                    <li>• Conte tarefas "Done" vs "To Do"</li>
-                                    <li>• Faça isso toda sexta-feira</li>
-                                </ul>
-                            </div>
+       carregarGuias() {
+    return {
+        kpis: {
+            titulo: "📊 KPIs - Como Medir Desempenho",
+            conteudo: `
+                <h3 class="text-2xl font-bold mb-4">1. ENTREGAS (%)</h3>
+                <div class="dica-box">
+                    <strong>💡 Fórmula:</strong> (Tarefas Concluídas / Tarefas Previstas) × 100
+                    <br><strong>Exemplo:</strong> 8 de 10 tarefas = 80%
+                </div>
+                <div class="exemplo-box">
+                    <strong>Como Coletar:</strong>
+                    <ul class="ml-4 mt-2 space-y-1">
+                        <li>• Use Trello/Notion/Google Tasks</li>
+                        <li>• Conte tarefas "Done" vs "To Do"</li>
+                        <li>• Faça isso toda sexta-feira</li>
+                    </ul>
+                </div>
 
-                            <h3 class="text-2xl font-bold mb-4 mt-6">2. PRODUTIVIDADE (%)</h3>
-                            <div class="dica-box">
-                                <strong>💡 Fórmula:</strong> (Horas Produtivas / Total Horas) × 100
-                                <br><strong>Exemplo:</strong> 6h produtivas de 8h = 75%
-                            </div>
-                            <div class="exemplo-box">
-                                <strong>Como Coletar:</strong>
-                                <ul class="ml-4 mt-2 space-y-1">
-                                    <li>• Use apps de time tracking (Toggl, RescueTime)</li>
-                                    <li>• Peça para registrar 3 dias típicos</li>
-                                    <li>• Calcule a média semanal</li>
-                                </ul>
-                            </div>
+                <h3 class="text-2xl font-bold mb-4 mt-6">2. PRODUTIVIDADE (%)</h3>
+                <div class="dica-box">
+                    <strong>💡 Fórmula:</strong> (Resultado Real / Meta Planejada) × 100
+                    <br><strong>Exemplo:</strong> Meta 100k, fez 85k = 85%
+                </div>
 
-                            <h3 class="text-2xl font-bold mb-4 mt-6">3. TAXA DE ERROS (%)</h3>
-                            <div class="dica-box">
-                                <strong>💡 Fórmula:</strong> (Entregas com Erro / Total Entregas) × 100
-                                <br><strong>Exemplo:</strong> 1 erro em 10 entregas = 10%
-                            </div>
+                <h3 class="text-2xl font-bold mb-4 mt-6">3. ERROS (%)</h3>
+                <div class="dica-box">
+                    <strong>💡 Fórmula:</strong> (Ocorrências / Total de Processos) × 100
+                    <br><strong>Objetivo:</strong> Quanto menor, melhor!
+                </div>
+            `
+        },
 
-                            <h3 class="text-2xl font-bold mb-4 mt-6">🎪 DINÂMICA DE GRUPO: Reunião de KPIs</h3>
-                            <div class="bg-orange-50 p-4 rounded-lg">
-                                <strong>⏰ Quando:</strong> Toda sexta-feira, 30 minutos
-                                <br><strong>📋 Como Fazer:</strong>
-                                <ol class="ml-4 mt-2 space-y-2">
-                                    <li>1. Cada consultor apresenta seus 3 números (5min)</li>
-                                    <li>2. Grupo identifica obstáculos juntos (10min)</li>
-                                    <li>3. Compartilhar boas práticas (10min)</li>
-                                    <li>4. Definir metas da próxima semana (5min)</li>
-                                </ol>
-                                <div class="mt-3 bg-yellow-50 p-3 rounded">
-                                    <strong>💡 Dica de Ouro:</strong> Crie clima de aprendizado, não cobrança!
-                                    Celebre melhorias, não só resultados perfeitos.
-                                </div>
-                            </div>
-                        `
-                    },
-                    
-                    smart: {
-                        titulo: "🎯 SMART - Metas Inteligentes",
-                        conteudo: `
-                            <div class="space-y-6">
-                                <div class="border-l-4 border-orange-500 pl-4">
-                                    <h3 class="text-xl font-bold">S - ESPECÍFICA</h3>
-                                    <p class="text-gray-700">O QUÊ exatamente precisa ser feito?</p>
-                                    <div class="mt-2 grid grid-cols-2 gap-3">
-                                        <div class="bg-red-50 p-3 rounded">
-                                            <strong class="text-red-700">❌ Ruim:</strong> "Vender mais"
-                                        </div>
-                                        <div class="bg-green-50 p-3 rounded">
-                                            <strong class="text-green-700">✅ Bom:</strong> "Vender 100k em software"
-                                        </div>
-                                    </div>
-                                </div>
+        smart: {
+            titulo: "🎯 Metas SMART",
+            conteudo: `
+                <div class="dica-box"><strong>S</strong> - Específica: Seja claro no que será feito</div>
+                <div class="dica-box"><strong>M</strong> - Mensurável: Tenha número</div>
+                <div class="dica-box"><strong>A</strong> - Atingível: Realista</div>
+                <div class="dica-box"><strong>R</strong> - Relevante: Importante para o time</div>
+                <div class="dica-box"><strong>T</strong> - Temporal: Com prazo</div>
 
-                                <div class="border-l-4 border-blue-500 pl-4">
-                                    <h3 class="text-xl font-bold">M - MENSURÁVEL</h3>
-                                    <p class="text-gray-700">COMO vou medir o progresso?</p>
-                                    <div class="mt-2 grid grid-cols-2 gap-3">
-                                        <div class="bg-red-50 p-3 rounded">
-                                            <strong class="text-red-700">❌ Ruim:</strong> "Ter mais clientes"
-                                        </div>
-                                        <div class="bg-green-50 p-3 rounded">
-                                            <strong class="text-green-700">✅ Bom:</strong> "15 novos clientes"
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="exemplo-box">
+                    <strong>Exemplo:</strong><br>
+                    Vender R$ 100.000 em software até 28/02 com 20 reuniões semanais.
+                </div>
+            `
+        },
 
-                                <div class="border-l-4 border-green-500 pl-4">
-                                    <h3 class="text-xl font-bold">A - ATINGÍVEL</h3>
-                                    <p class="text-gray-700">É POSSÍVEL com os recursos disponíveis?</p>
-                                    <div class="dica-box mt-2">
-                                        💡 Analise histórico + recursos disponíveis. Meta deve desafiar mas não ser impossível.
-                                    </div>
-                                </div>
+        cha: {
+            titulo: "🧠 CHA - Conhecimento, Habilidade, Atitude",
+            conteudo: `
+                <div class="dica-box"><strong>Conhecimento:</strong> Sabe o que fazer?</div>
+                <div class="dica-box"><strong>Habilidade:</strong> Consegue fazer?</div>
+                <div class="dica-box"><strong>Atitude:</strong> Quer fazer?</div>
 
-                                <div class="border-l-4 border-purple-500 pl-4">
-                                    <h3 class="text-xl font-bold">R - RELEVANTE</h3>
-                                    <p class="text-gray-700">POR QUE isso é importante?</p>
-                                    <div class="dica-box mt-2">
-                                        💡 Conecte com objetivos maiores. Mostre o impacto no resultado da equipe.
-                                    </div>
-                                </div>
+                <div class="exemplo-box">
+                    Pessoa com atitude alta aprende rápido mesmo com pouco conhecimento.
+                </div>
+            `
+        },
 
-                                <div class="border-l-4 border-pink-500 pl-4">
-                                    <h3 class="text-xl font-bold">T - TEMPORAL</h3>
-                                    <p class="text-gray-700">QUANDO precisa estar pronto?</p>
-                                    <div class="mt-2 grid grid-cols-2 gap-3">
-                                        <div class="bg-red-50 p-3 rounded">
-                                            <strong class="text-red-700">❌ Ruim:</strong> "Em breve"
-                                        </div>
-                                        <div class="bg-green-50 p-3 rounded">
-                                            <strong class="text-green-700">✅ Bom:</strong> "Até 28/02/2026"
-                                        </div>
-                                    </div>
-                                </div>
+        competencias: {
+            titulo: "⭐ Competências",
+            conteudo: `
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Responsabilidade</li>
+                    <li>Comunicação</li>
+                    <li>Organização</li>
+                    <li>Proatividade</li>
+                    <li>Trabalho em equipe</li>
+                    <li>Liderança</li>
+                </ul>
 
-                                <div class="bg-green-50 p-6 rounded-lg">
-                                    <h3 class="text-xl font-bold mb-3">✅ EXEMPLO COMPLETO</h3>
-                                    <p class="text-lg font-medium">
-                                        "Vender R$ 80.000 em contratos de software até 28/02/2026, 
-                                        realizando 20 reuniões/semana com decisores de PMEs da região, 
-                                        contribuindo para meta de 450k do time"
-                                    </p>
-                                </div>
+                <div class="dica-box">
+                    Avalie de 1 a 5 com base em comportamentos reais.
+                </div>
+            `
+        },
 
-                                <div class="bg-purple-50 p-6 rounded-lg">
-                                    <h3 class="text-xl font-bold mb-3">🎪 DINÂMICA: Workshop de Metas</h3>
-                                    <p><strong>⏰ 45 minutos</strong> • Material: Post-its</p>
-                                    <ol class="ml-4 mt-3 space-y-2">
-                                        <li>1. Cada um escreve meta atual (5min)</li>
-                                        <li>2. Em duplas, transformar em SMART (15min)</li>
-                                        <li>3. Apresentar e receber feedback (20min)</li>
-                                        <li>4. Finalizar metas validadas (5min)</li>
-                                    </ol>
-                                </div>
-                            </div>
-                       `
-                    },
+        feedback: {
+            titulo: "💬 Feedback Estruturado",
+            conteudo: `
+                <ol class="list-decimal ml-6 space-y-2">
+                    <li>O que está funcionando</li>
+                    <li>O que pode melhorar</li>
+                    <li>Impacto disso</li>
+                    <li>Ajuste esperado</li>
+                </ol>
 
-                    cha: {
-                        titulo: "🧠 CHA - Conhecimento, Habilidade e Atitude",
-                        conteudo: `
-                            <div class="grid grid-cols-1 gap-6">
-                                <div class="bg-blue-50 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-blue-800 mb-3">🧠 CONHECIMENTO</h3>
-                                    <p class="text-lg mb-3"><strong>Pergunta:</strong> A pessoa SABE o que fazer?</p>
-                                    
-                                    <div class="grid grid-cols-3 gap-3 mb-4">
-                                        <div class="bg-white p-3 rounded">
-                                            <strong class="text-red-600">Baixo (1-2):</strong>
-                                            <ul class="text-sm mt-2 space-y-1">
-                                                <li>• Faz perguntas básicas sempre</li>
-                                                <li>• Não conhece processos</li>
-                                                <li>• Precisa supervisão constante</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-white p-3 rounded">
-                                            <strong class="text-yellow-600">Médio (3):</strong>
-                                            <ul class="text-sm mt-2 space-y-1">
-                                                <li>• Conhece o básico</li>
-                                                <li>• Executa tarefas padrão</li>
-                                                <li>• Às vezes precisa ajuda</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-white p-3 rounded">
-                                            <strong class="text-green-600">Alto (4-5):</strong>
-                                            <ul class="text-sm mt-2 space-y-1">
-                                                <li>• Domina processos</li>
-                                                <li>• Propõe melhorias</li>
-                                                <li>• Ensina outros</li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                <div class="exemplo-box">
+                    Exemplo: Quando você atrasa relatórios, o time perde prazo. Preciso que entregue até 17h.
+                </div>
+            `
+        },
 
-                                    <div class="dica-box">
-                                        <strong>💡 Como Melhorar:</strong> Treinamentos, cursos, mentoria, certificações
-                                    </div>
-                                </div>
+        avaliacao360: {
+            titulo: "🔄 Avaliação 360°",
+            conteudo: `
+                <p>Autoavaliação + Líder + Pares + Subordinados</p>
 
-                                <div class="bg-green-50 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-green-800 mb-3">💪 HABILIDADE</h3>
-                                    <p class="text-lg mb-3"><strong>Pergunta:</strong> A pessoa CONSEGUE executar?</p>
-                                    
-                                    <div class="dica-box">
-                                        <strong>Diferença:</strong> CONHECIMENTO = Sabe a teoria | HABILIDADE = Consegue fazer na prática
-                                    </div>
+                <div class="dica-box">
+                    Use média para ter visão justa do colaborador.
+                </div>
+            `
+        },
 
-                                    <div class="exemplo-box mt-3">
-                                        <strong>📝 Exemplo:</strong> Vendedor sabe todas as técnicas (Conhecimento alto)
-                                        mas trava na hora de falar com cliente (Habilidade baixa)
-                                    </div>
+        matriz: {
+            titulo: "📊 Matriz: Desempenho x Comportamento",
+            conteudo: `
+                <p>Cruza ENTREGA com CULTURA para decisões.</p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>Desenvolver</li>
+                    <li>Alerta</li>
+                    <li>Treinar</li>
+                    <li>Desligar</li>
+                </ul>
+            `
+        },
 
-                                    <div class="dica-box mt-3">
-                                        <strong>💡 Como Melhorar:</strong> Prática deliberada, role-playing, projetos reais supervisionados
-                                    </div>
-                                </div>
+        pdi: {
+            titulo: "📈 PDI - Plano de Desenvolvimento Individual",
+            conteudo: `
+                <p>Defina ações práticas para evolução do colaborador.</p>
 
-                                <div class="bg-orange-50 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-orange-800 mb-3">⭐ ATITUDE</h3>
-                                    <p class="text-lg mb-3"><strong>Pergunta:</strong> A pessoa QUER fazer bem feito?</p>
-                                    
-                                    <div class="grid grid-cols-2 gap-3 mb-4">
-                                        <div class="bg-white p-4 rounded">
-                                            <strong class="text-red-600">Atitude Baixa:</strong>
-                                            <ul class="text-sm mt-2 space-y-1">
-                                                <li>• Faz o mínimo</li>
-                                                <li>• Não se importa com qualidade</li>
-                                                <li>• Desmotivado</li>
-                                                <li>• Zero iniciativa</li>
-                                            </ul>
-                                        </div>
-                                        <div class="bg-white p-4 rounded">
-                                            <strong class="text-green-600">Atitude Alta:</strong>
-                                            <ul class="text-sm mt-2 space-y-1">
-                                                <li>• Proativo</li>
-                                                <li>• Busca excelência</li>
-                                                <li>• Auto-motivado</li>
-                                                <li>• Vai além do esperado</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="bg-red-100 border-l-4 border-red-500 p-4">
-                                        <strong>⚠️ ATENÇÃO:</strong> Atitude é a mais difícil de mudar!
-                                        Às vezes é melhor contratar por atitude e treinar conhecimento/habilidade.
-                                    </div>
-                                </div>
-
-                                <div class="bg-purple-50 p-6 rounded-lg">
-                                    <h3 class="text-xl font-bold mb-3">📚 CASO PRÁTICO</h3>
-                                    <div class="bg-white p-4 rounded mb-3">
-                                        <strong>Situação:</strong> Vendedor não fecha vendas
-                                    </div>
-                                    <div class="grid grid-cols-3 gap-3 mb-3">
-                                        <div class="bg-blue-100 p-3 rounded text-center">
-                                            <div class="font-bold">Conhecimento</div>
-                                            <div class="text-3xl">5⭐</div>
-                                            <div class="text-sm">Conhece todo produto</div>
-                                        </div>
-                                        <div class="bg-green-100 p-3 rounded text-center">
-                                            <div class="font-bold">Habilidade</div>
-                                            <div class="text-3xl">4⭐</div>
-                                            <div class="text-sm">Apresenta bem</div>
-                                        </div>
-                                        <div class="bg-red-100 p-3 rounded text-center">
-                                            <div class="font-bold">Atitude</div>
-                                            <div class="text-3xl">2⭐</div>
-                                            <div class="text-sm">Desiste fácil</div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-green-50 p-4 rounded">
-                                        <strong>✅ Diagnóstico:</strong> Problema é ATITUDE, não conhecimento!
-                                        <br><strong>Ação:</strong> Trabalhe motivação, persistência e mentalidade de crescimento.
-                                    </div>
-                                </div>
-                            </div>
-                        `
-                    },
-
-                    feedback: {
-                        titulo: "💬 Feedback em 4 Etapas",
-                        conteudo: `
-                            <div class="space-y-6">
-                                <div class="border-l-4 border-green-500 bg-green-50 p-6 rounded">
-                                    <h3 class="text-2xl font-bold text-green-800 mb-3">1️⃣ O QUE ESTÁ FUNCIONANDO</h3>
-                                    <p class="mb-3"><strong>Objetivo:</strong> Reconhecer e reforçar comportamentos positivos</p>
-                                    
-                                    <div class="grid grid-cols-2 gap-3 mb-3">
-                                        <div class="bg-red-100 p-3 rounded">
-                                            <strong>❌ Ruim:</strong> "Você está indo bem"
-                                        </div>
-                                        <div class="bg-green-100 p-3 rounded">
-                                            <strong>✅ Bom:</strong> "Suas apresentações melhoraram muito. 
-                                            Na última reunião você antecipou objeções e trouxe dados que convenceram o cliente."
-                                        </div>
-                                    </div>
-
-                                    <div class="dica-box">
-                                        💡 Template: "Eu percebi que [comportamento específico] e isso gerou [resultado positivo]. Continue assim!"
-                                    </div>
-                                </div>
-
-                                <div class="border-l-4 border-yellow-500 bg-yellow-50 p-6 rounded">
-                                    <h3 class="text-2xl font-bold text-yellow-800 mb-3">2️⃣ O QUE PRECISA MELHORAR</h3>
-                                    <p class="mb-3"><strong>Objetivo:</strong> Identificar oportunidade de crescimento</p>
-                                    
-                                    <div class="grid grid-cols-2 gap-3 mb-3">
-                                        <div class="bg-red-100 p-3 rounded">
-                                            <strong>❌ Ruim:</strong> "Você é desorganizado"
-                                        </div>
-                                        <div class="bg-green-100 p-3 rounded">
-                                            <strong>✅ Bom:</strong> "Nas últimas 3 reuniões você chegou sem material preparado. 
-                                            Isso nos fez perder tempo."
-                                        </div>
-                                    </div>
-
-                                    <div class="bg-red-100 border-l-4 border-red-500 p-3">
-                                        ⚠️ IMPORTANTE: Foque no COMPORTAMENTO, não na PESSOA!
-                                    </div>
-                                </div>
-
-                                <div class="border-l-4 border-orange-500 bg-orange-50 p-6 rounded">
-                                    <h3 class="text-2xl font-bold text-orange-800 mb-3">3️⃣ IMPACTO DO COMPORTAMENTO</h3>
-                                    <p class="mb-3"><strong>Objetivo:</strong> Mostrar consequências</p>
-                                    
-                                    <div class="space-y-2">
-                                        <div class="bg-white p-3 rounded">
-                                            <strong>💼 Impacto no negócio:</strong> "Isso fez perdermos 2 vendas este mês"
-                                        </div>
-                                        <div class="bg-white p-3 rounded">
-                                            <strong>👥 Impacto no time:</strong> "O time ficou desmotivado quando você não apareceu"
-                                        </div>
-                                        <div class="bg-white p-3 rounded">
-                                            <strong>🎯 Impacto pessoal:</strong> "Isso está limitando suas chances de promoção"
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="border-l-4 border-blue-500 bg-blue-50 p-6 rounded">
-                                    <h3 class="text-2xl font-bold text-blue-800 mb-3">4️⃣ AJUSTE ESPERADO</h3>
-                                    <p class="mb-3"><strong>Objetivo:</strong> Definir ação clara</p>
-                                    
-                                    <div class="grid grid-cols-2 gap-3 mb-3">
-                                        <div class="bg-red-100 p-3 rounded">
-                                            <strong>❌ Ruim:</strong> "Seja mais profissional"
-                                        </div>
-                                        <div class="bg-green-100 p-3 rounded">
-                                            <strong>✅ Bom:</strong> "Prepare material 1 dia antes e me envie para revisão. 
-                                            Vamos fazer isso nas próximas 4 semanas."
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold mb-4">📖 EXEMPLO COMPLETO</h3>
-                                    
-                                    <div class="space-y-3">
-                                        <div class="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-                                            <strong>🟢 Funcionando:</strong> "João, suas entregas técnicas estão excelentes. 
-                                            O código da última sprint foi impecável."
-                                        </div>
-                                        
-                                        <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
-                                            <strong>🟡 Melhorar:</strong> "Porém, você faltou 3 das últimas 5 reuniões 
-                                            de planning sem avisar."
-                                        </div>
-                                        
-                                        <div class="bg-orange-100 border-l-4 border-orange-500 p-4 rounded">
-                                            <strong>🟠 Impacto:</strong> "Isso impactou o time porque ficamos sem informações 
-                                            técnicas e decidimos tarefas sem sua opinião, gerando retrabalho."
-                                        </div>
-                                        
-                                        <div class="bg-blue-100 border-l-4 border-blue-500 p-4 rounded">
-                                            <strong>🔵 Ajuste:</strong> "Preciso que você esteja em todas as plannings. 
-                                            Se impossível, avise com 24h. Vamos acompanhar nas próximas 4 semanas. Ok?"
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="bg-green-50 p-4 rounded">
-                                        <h4 class="font-bold text-green-800 mb-3">✅ DICAS</h4>
-                                        <ul class="text-sm space-y-1">
-                                            <li>• Dê feedback em até 48h do fato</li>
-                                            <li>• Sempre em particular</li>
-                                            <li>• Tom respeitoso e empático</li>
-                                            <li>• Ouça a versão da pessoa</li>
-                                            <li>• Faça follow-up</li>
-                                        </ul>
-                                    </div>
-                                    <div class="bg-red-50 p-4 rounded">
-                                        <h4 class="font-bold text-red-800 mb-3">❌ EVITE</h4>
-                                        <ul class="text-sm space-y-1">
-                                            <li>• Feedback sanduíche (falso)</li>
-                                            <li>• "Você sempre..." (generalizar)</li>
-                                            <li>• Comparar com outros</li>
-                                            <li>• Dar feedback com raiva</li>
-                                            <li>• Não definir próximo passo</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        `
-                    },
-
-                    matriz: {
-                        titulo: "📊 Matriz: Desempenho x Comportamento",
-                        conteudo: `
-                            <div class="mb-6 bg-blue-50 p-6 rounded-lg">
-                                <h3 class="text-2xl font-bold mb-3">Como Funciona</h3>
-                                <p class="mb-2"><strong>Eixo X:</strong> ENTREGA (Produtividade, Resultados, KPIs)</p>
-                                <p class="mb-3"><strong>Eixo Y:</strong> CULTURA (CHA, Competências, Fit Cultural)</p>
-                                <p>Cruzar esses dois eixos cria 4 quadrantes com ações específicas</p>
-                            </div>
-
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <!-- DESENVOLVER -->
-                                <div class="bg-green-50 border-4 border-green-500 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-green-800 mb-2">🟢 DESENVOLVER</h3>
-                                    <p class="font-bold mb-3">Alta Entrega + Boa Cultura = ⭐ ESTRELAS</p>
-                                    
-                                    <div class="bg-white p-3 rounded mb-3">
-                                        <strong>Perfil:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>• Bate meta todo mês</li>
-                                            <li>• Ajuda colegas</li>
-                                            <li>• Vive os valores</li>
-                                            <li>• Todos querem trabalhar com ele</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="bg-green-800 text-white p-3 rounded">
-                                        <strong>O QUE FAZER:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>🎯 INVESTIR: Promover, aumentar</li>
-                                            <li>🚀 Dar desafios maiores</li>
-                                            <li>👥 Colocar para mentorar</li>
-                                            <li>💼 Preparar para liderança</li>
-                                        </ul>
-                                    </div>
-
-                                    <p class="mt-3 font-bold text-red-600">⚠️ Risco: Perder para concorrência!</p>
-                                </div>
-
-                                <!-- ALERTA -->
-                                <div class="bg-yellow-50 border-4 border-yellow-500 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-yellow-800 mb-2">🟡 ALERTA</h3>
-                                    <p class="font-bold mb-3">Alta Entrega + Má Cultura = ⚠️ MERCENÁRIOS</p>
-                                    
-                                    <div class="bg-white p-3 rounded mb-3">
-                                        <strong>Perfil:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>• Top vendedor mas arrogante</li>
-                                            <li>• Produtivo mas não colabora</li>
-                                            <li>• Atinge meta mas queima pontes</li>
-                                            <li>• Tóxico para o time</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="bg-yellow-800 text-white p-3 rounded">
-                                        <strong>O QUE FAZER:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>⚠️ Feedback URGENTE sobre comportamento</li>
-                                            <li>📋 Metas comportamentais claras</li>
-                                            <li>⏰ Prazo: 30-60 dias para mudança</li>
-                                            <li>⚖️ Se não mudar → DESLIGAR</li>
-                                        </ul>
-                                    </div>
-
-                                    <p class="mt-3 font-bold text-red-600">⚠️ Risco: Contaminar a cultura!</p>
-                                </div>
-
-                                <!-- TREINAR -->
-                                <div class="bg-blue-50 border-4 border-blue-500 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-blue-800 mb-2">🔵 TREINAR</h3>
-                                    <p class="font-bold mb-3">Baixa Entrega + Boa Cultura = 💎 DIAMANTES BRUTOS</p>
-                                    
-                                    <div class="bg-white p-3 rounded mb-3">
-                                        <strong>Perfil:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>• Pessoa ótima mas não entrega</li>
-                                            <li>• Se esforça mas falta habilidade</li>
-                                            <li>• Time adora mas meta não bate</li>
-                                            <li>• Tem potencial mas não performance</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="bg-blue-800 text-white p-3 rounded">
-                                        <strong>O QUE FAZER:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>📚 TREINAR: Capacitação técnica</li>
-                                            <li>👨‍🏫 Mentoria intensiva</li>
-                                            <li>🎯 Metas menores progressivas</li>
-                                            <li>⏰ Prazo: 60-90 dias para melhorar</li>
-                                        </ul>
-                                    </div>
-
-                                    <p class="mt-3 font-bold text-blue-600">💡 Invista neles!</p>
-                                </div>
-
-                                <!-- DESLIGAR -->
-                                <div class="bg-red-50 border-4 border-red-500 p-6 rounded-lg">
-                                    <h3 class="text-2xl font-bold text-red-800 mb-2">🔴 DESLIGAR</h3>
-                                    <p class="font-bold mb-3">Baixa Entrega + Má Cultura = 🧛 VAMPIROS</p>
-                                    
-                                    <div class="bg-white p-3 rounded mb-3">
-                                        <strong>Perfil:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>• Não bate meta e reclama</li>
-                                            <li>• Baixa produtividade + atitude ruim</li>
-                                            <li>• Contamina time com negatividade</li>
-                                            <li>• Faz o mínimo mal feito</li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="bg-red-800 text-white p-3 rounded">
-                                        <strong>O QUE FAZER:</strong>
-                                        <ul class="text-sm mt-2 space-y-1">
-                                            <li>🚨 DESLIGAR o quanto antes</li>
-                                            <li>📋 Feedback claro do porquê</li>
-                                            <li>⚖️ Seguir processo legal</li>
-                                            <li>🔄 Substituir por alguém melhor</li>
-                                        </ul>
-                                    </div>
-
-                                    <p class="mt-3 font-bold text-red-600">⚠️ Manter é pior que desligar!</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-orange-50 p-6 rounded-lg">
-                                <h3 class="text-xl font-bold mb-4">🎯 Como Classificar</h3>
-                                <ol class="space-y-2">
-                                    <li><strong>1.</strong> Calcule ENTREGA (média de KPIs, especialmente produtividade)</li>
-                                    <li><strong>2.</strong> Calcule CULTURA (média de CHA + Competências + 360)</li>
-                                    <li><strong>3.</strong> Classifique:
-                                        <ul class="ml-6 mt-2 space-y-1">
-                                            <li>• Entrega ≥80% + Cultura ≥4.0 = DESENVOLVER</li>
-                                            <li>• Entrega ≥80% + Cultura <4.0 = ALERTA</li>
-                                            <li>• Entrega <80% + Cultura ≥4.0 = TREINAR</li>
-                                            <li>• Entrega <80% + Cultura <4.0 = DESLIGAR</li>
-                                        </ul>
-                                    </li>
-                                </ol>
-                            </div>
-
-                            <div class="bg-red-100 border-l-4 border-red-500 p-4 mt-4">
-                                <strong class="text-red-800">⚠️ ERRO COMUM:</strong> Manter "Alerta" e "Desligar" 
-                                por muito tempo esperando mudança. Seja decisivo!
-                            </div>
-                       `
-                    }
-                };
-            }
+                <div class="dica-box">
+                    Sempre tenha prazo e responsável.
+                </div>
+            `
+        }
+    };
+}
 
             abrirGuia(ferramenta) {
                 const guia = this.guias[ferramenta];
