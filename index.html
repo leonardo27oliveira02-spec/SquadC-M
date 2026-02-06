@@ -1,966 +1,397 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação de Desempenho - Squad</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --cor-laranja: #D97B3A;
-            --cor-escuro: #8B5A3C;
-            --cor-clara: #F4E4D7;
-        }
-        .bg-cm-laranja { background-color: var(--cor-laranja); }
-        .bg-cm-escuro { background-color: var(--cor-escuro); }
-        .text-cm-laranja { color: var(--cor-laranja); }
-        .text-cm-escuro { color: var(--cor-escuro); }
-        .border-cm-laranja { border-color: var(--cor-laranja); }
-        
-        .card-ferramenta {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .card-ferramenta:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
-        .matriz-box {
-            border: 2px solid #D97B3A;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-        }
-        
-        .feedback-step {
-            background: linear-gradient(135deg, #D97B3A, #8B5A3C);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        
-        .competencia-badge {
-            background: #F4E4D7;
-            border: 2px solid #D97B3A;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            color: #8B5A3C;
-        }
-        
-        .avaliacao-360 {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto;
-        }
-        
-        .circulo-360 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid #D97B3A;
-            border-radius: 50%;
-        }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <div id="app"></div>
+// ===== BIBLIOTECA DE CONHECIMENTO PARA LÍDERES =====
 
-    <script>
-        class AvaliacaoDesempenho {
-            constructor() {
-                this.paginaAtual = 'home';
-                this.metaMensal = 450000;
-                this.colaboradores = [];
-                this.colaboradorSelecionado = null;
-                this.colaboradorEditando = null;
-                
-                this.render();
+const BIBLIOTECA_CONHECIMENTO = {
+    kpis: {
+        titulo: "KPIs - Indicadores de Desempenho",
+        descricao: "Métricas objetivas para medir resultado, eficiência e consistência.",
+        exemplos: [
+            {
+                situacao: "Consultor com 68% de entregas",
+                analise: "Abaixo da meta (80%). Investigar: problemas de processo, capacitação ou motivação?",
+                acao: "Reunião 1-on-1 para entender obstáculos. Criar plano de 30 dias com metas semanais incrementais: Semana 1: 70%, Semana 2: 75%, Semana 3: 78%, Semana 4: 80%."
+            },
+            {
+                situacao: "Produtividade de 89% mas 12% de erros",
+                analise: "Alto volume com qualidade comprometida. Risco de retrabalho e insatisfação de clientes.",
+                acao: "Reduzir ritmo temporariamente. Implementar checklist de qualidade. Revisar processos. Meta: máximo 5% de erros mantendo 85% de produtividade."
+            },
+            {
+                situacao: "Entregas 95%, Produtividade 92%, Erros 2%",
+                analise: "Performance excepcional. Candidato a desenvolver e assumir mais responsabilidades.",
+                acao: "Reconhecer publicamente. Oferecer projeto desafiador ou mentoria de novos colaboradores. Discutir plano de carreira."
             }
-
-            // ===== GESTÃO DE COLABORADORES =====
-            
-            adicionarColaborador() {
-                const nome = prompt('Nome do Colaborador:');
-                if (!nome) return;
-
-                const colaborador = {
-                    id: Date.now(),
-                    nome: nome,
-                    cargo: 'Consultor',
-                    kpis: {
-                        entregas: 0,
-                        produtividade: 0,
-                        erros: 0
-                    },
-                    metas: {
-                        especifica: '',
-                        mensuravel: 0,
-                        atingivel: '',
-                        relevante: '',
-                        temporal: ''
-                    },
-                    cha: {
-                        conhecimento: 3,
-                        habilidade: 3,
-                        atitude: 3
-                    },
-                    competencias: {
-                        responsabilidade: 3,
-                        comunicacao: 3,
-                        organizacao: 3,
-                        proatividade: 3,
-                        trabalhoEquipe: 3,
-                        lideranca: 3
-                    },
-                    feedback: {
-                        funcionando: '',
-                        melhorar: '',
-                        impacto: '',
-                        ajuste: ''
-                    },
-                    avaliacao360: {
-                        autoavaliacao: 3,
-                        lider: 3,
-                        pares: 3,
-                        subordinados: 3
-                    },
-                    matrizDesempenho: 'Treinar', // Treinar, Desenvolver, Desligar, Alerta
-                    pdi: {
-                        pontoForte: '',
-                        pontoMelhoria: '',
-                        acaoPratica: '',
-                        prazo: '',
-                        responsavel: ''
-                    }
-                };
-
-                this.colaboradores.push(colaborador);
-                this.salvarDados();
-                this.render();
+        ],
+        dicasCampo: [
+            "📊 Meça semanalmente, não apenas no fim do mês - permite correção rápida",
+            "🎯 Defina metas progressivas (60% → 70% → 80%) - pequenas vitórias motivam",
+            "💬 Sempre contextualize os números com conversas - dados sem contexto geram mal-entendidos",
+            "⚠️ Erros acima de 5% exigem intervenção imediata - qualidade não pode esperar",
+            "🏆 Celebre pequenas vitórias para manter motivação alta",
+            "📈 Use gráficos visuais - o cérebro processa imagens 60x mais rápido que texto",
+            "⏰ Acompanhe tendências, não apenas números absolutos - direção importa mais que posição"
+        ]
+    },
+    
+    smart: {
+        titulo: "Metas SMART - Objetivos Eficazes",
+        descricao: "Transforme intenções vagas em compromissos claros e alcançáveis.",
+        exemplos: [
+            {
+                errado: "Vender mais este mês",
+                correto: "Vender R$ 100.000 em fevereiro através de 15 reuniões/semana com clientes novos, alcançando 30% de conversão",
+                porque: "Específica (100k), Mensurável (R$), Atingível (15 reuniões), Relevante (clientes novos), Temporal (fevereiro)"
+            },
+            {
+                errado: "Melhorar atendimento ao cliente",
+                correto: "Reduzir tempo médio de resposta de 4h para 2h até dia 28/02, respondendo 100% dos contatos em até 1h no horário comercial",
+                porque: "Meta clara, medível, com prazo e método definidos"
+            },
+            {
+                errado: "Ser mais organizado",
+                correto: "Atualizar CRM diariamente com 100% das interações até às 18h, mantendo pipeline atualizado durante todo fevereiro",
+                porque: "Comportamento específico, frequência definida, prazo claro"
             }
-
-            editarColaborador(id) {
-                this.colaboradorEditando = this.colaboradores.find(c => c.id === id);
-                this.paginaAtual = 'editar';
-                this.render();
+        ],
+        dicasCampo: [
+            "🎯 Evite metas genéricas como 'fazer mais' ou 'melhorar' - seja cirúrgico",
+            "📏 Se não pode medir, não é meta - é desejo ou esperança",
+            "🚀 Metas stretch são boas (120%), impossíveis desmotivam (300%)",
+            "📅 Sempre defina prazo específico, não 'em breve' ou 'logo'",
+            "✅ Revise metas semanalmente e ajuste se necessário - rigidez mata inovação",
+            "🎨 Envolva a pessoa na construção da meta - ownership gera comprometimento",
+            "💪 Meta sem plano de ação é só wishful thinking - sempre pergunte 'COMO vai fazer?'"
+        ],
+        template: "Eu vou [AÇÃO ESPECÍFICA] até [DATA EXATA] através de [MÉTODO CLARO] para alcançar [RESULTADO MENSURÁVEL]"
+    },
+    
+    cha: {
+        titulo: "CHA - Conhecimento, Habilidade e Atitude",
+        descricao: "Diagnostique lacunas e direcione o desenvolvimento com precisão cirúrgica.",
+        exemplos: [
+            {
+                perfil: "Conhecimento(5) + Habilidade(2) + Atitude(5)",
+                diagnostico: "Sabe a teoria mas não consegue executar na prática. Muito motivado para aprender.",
+                solucao: "TREINO PRÁTICO intensivo: Shadowing com top performer, role-plays 3x/semana, mentoria próxima. NÃO precisa de curso teórico - já sabe demais, precisa fazer."
+            },
+            {
+                perfil: "Conhecimento(4) + Habilidade(5) + Atitude(2)",
+                diagnostico: "Talentoso mas desmotivado ou com má atitude. Alto risco de contaminação do time.",
+                solucao: "CONVERSA PROFUNDA urgente: Entender motivos reais (problemas pessoais? Insatisfação? Desalinhamento cultural?). Realinhar propósito ou considerar desligamento em 30-60 dias."
+            },
+            {
+                perfil: "Conhecimento(2) + Habilidade(2) + Atitude(5)",
+                diagnostico: "Quer muito, esforçado, mas não tem base técnica nem prática. Potencial de crescimento ALTO.",
+                solucao: "CAPACITAÇÃO estruturada: Curso técnico + prática acompanhada + feedback diário + paciência. Pode virar estrela em 6 meses."
+            },
+            {
+                perfil: "Conhecimento(5) + Habilidade(5) + Atitude(5)",
+                diagnostico: "Top performer completo. Raro e valioso.",
+                solucao: "DESENVOLVER: Desafios maiores, autonomia, projetos estratégicos, mentoria reversa, caminho para liderança. CUIDADO para não perder!"
             }
+        ],
+        dicasCampo: [
+            "🧠 Conhecimento = testa com perguntas técnicas ('Como você faria X?')",
+            "💪 Habilidade = observa executando na prática (acompanhe em campo)",
+            "⭐ Atitude = percebe energia, proatividade, comprometimento, como reage a problemas",
+            "🎯 Atitude é mais difícil de mudar que conhecimento - contratar por atitude, treinar habilidade",
+            "⚠️ Baixa atitude + baixa habilidade = alto risco - não invista tempo demais",
+            "🚀 Alta atitude + baixo conhecimento = melhor investimento - vai longe",
+            "💡 Nunca assuma que alguém sabe - teste sempre antes de delegar"
+        ],
+        matriz: "⚡ REGRA DE OURO: Se ATITUDE está baixa, trabalhe PRIMEIRO a motivação/alinhamento antes de treinar habilidades. Treinar alguém desmotivado é desperdício de energia."
+    },
+    
+    feedback: {
+        titulo: "Feedback Estruturado em 4 Etapas",
+        descricao: "Técnica profissional para dar feedbacks construtivos e eficazes. Use SEMPRE este framework.",
+        estrutura: [
+            {
+                etapa: "1️⃣ O que está funcionando",
+                objetivo: "Começar pelo positivo cria abertura e reduz defensividade. Pessoa abre a guarda.",
+                exemplo: "'Você tem conseguido bater suas metas de ligações diárias consistentemente e sua taxa de conversão melhorou 15% no último mês. Isso mostra seu esforço e dedicação.'"
+            },
+            {
+                etapa: "2️⃣ O que precisa melhorar",
+                objetivo: "Seja ESPECÍFICO e OBJETIVO, sem julgamentos pessoais. Use dados e exemplos com datas.",
+                exemplo: "'Observei que nos últimos 3 follow-ups (dias 10, 15 e 20/02) você demorou mais de 48h para retornar o cliente após a primeira reunião.'"
+            },
+            {
+                etapa: "3️⃣ Impacto do comportamento",
+                objetivo: "Conectar ação com consequência - faz a pessoa entender o 'porquê importa'. Não é pessoal, é impacto.",
+                exemplo: "'Isso resultou em 2 vendas perdidas para concorrentes (clientes X e Y) e pode comprometer nossa meta trimestral de 1.2M. Além disso, afeta a confiança do cliente em nosso profissionalismo.'"
+            },
+            {
+                etapa: "4️⃣ Ajuste esperado / Próximo passo",
+                objetivo: "Terminar com AÇÃO CLARA - nunca deixe no ar. Pessoa precisa sair sabendo exatamente o que fazer.",
+                exemplo: "'A partir de hoje, implementaremos regra de resposta em 24h. Vou te passar um template de follow-up que acelera o processo. Vamos revisar seus follow-ups toda sexta. Consegue fazer isso?'"
+            }
+        ],
+        exemplosCompletos: [
+            {
+                cenario: "Colaborador inteligente mas arrogante com o time",
+                feedback: `
+✅ FUNCIONANDO: "Seus números são excelentes - você é top 3 em vendas do time, com 120% da meta. Seu conhecimento técnico é inquestionável."
 
-            excluirColaborador(id) {
-                if (confirm('Deseja excluir este colaborador?')) {
-                    this.colaboradores = this.colaboradores.filter(c => c.id !== id);
-                    this.salvarDados();
-                    this.render();
+⚠️ MELHORAR: "Mas tenho recebido 3 reclamações formais de colegas sobre comentários sarcásticos e desrespeitosos nas reuniões. Na última segunda, você disse 'essa ideia é ridícula' quando a Maria apresentou a proposta dela."
+
+💥 IMPACTO: "Isso está criando ambiente tóxico. Pessoas pararam de compartilhar ideias. Perdemos um bom profissional (João) que pediu transferência citando especificamente seu comportamento."
+
+🎯 PRÓXIMO PASSO: "Comportamento respeitoso é inegociável aqui. Nas próximas reuniões, quero que você ouça TODA a ideia antes de comentar. Se discordar, apresente alternativa construtiva. Vou pedir feedback semanal ao time sobre clima. Se não mudar em 30 dias, vamos reavaliar seu fit cultural mesmo com bons números."
+                `
+            },
+            {
+                cenario: "Colaborador esforçado mas com resultados fracos",
+                feedback: `
+✅ FUNCIONANDO: "Reconheço 100% seu esforço - você é o primeiro a chegar (7h) e último a sair (19h). Vejo sua dedicação e comprometimento."
+
+⚠️ MELHORAR: "Mas seus números estão em 45% da meta há 2 meses consecutivos (jan: 43%, fev: 47%). Isso apesar das 60h/semana que você trabalha."
+
+💥 IMPACTO: "Com essa performance, não conseguimos sustentar sua posição no time. Além disso, você está se esgotando sem resultado - isso não é sustentável para sua saúde."
+
+🎯 PRÓXIMO PASSO: "Vamos mudar a estratégia. Próximas 4 semanas: trabalhe 8h/dia focado (não quantidade, qualidade). Vou acompanhar você diariamente - shadowing, role-plays, revisão de técnica. Meta: 70% até fim de março. Se não atingir, vamos reposicionar você para função onde você vai brilhar mais. Topas esse desafio?"
+                `
+            }
+        ],
+        dicasCampo: [
+            "⏰ Feedback deve ser dado o MAIS PRÓXIMO possível do evento - não espere semanas",
+            "🚫 NUNCA dê feedback negativo em público - sempre em privado, 1-on-1",
+            "📝 Anote exemplos ESPECÍFICOS com DATAS antes da conversa - memória falha",
+            "👂 Ouça MAIS que fala (70/30) - pergunte 'o que você acha?' e ESCUTE de verdade",
+            "🔄 Faça follow-up em 1 semana - feedback sem acompanhamento é inútil",
+            "😊 Tom FIRME mas RESPEITOSO - não é ataque pessoal, é desenvolvimento profissional",
+            "🎯 Termine SEMPRE com próximos passos CLAROS e MENSURÁVEIS",
+            "📊 Documente tudo após a conversa - proteção legal e histórico",
+            "💬 Use 'eu observei' em vez de 'você é' - fatos, não julgamentos",
+            "⚡ Se pessoa ficar muito defensiva/emocional, pause e remarque - não force na emoção"
+        ]
+    },
+    
+    matriz: {
+        titulo: "Matriz Desempenho x Comportamento",
+        descricao: "Ferramenta estratégica #1 para decisões de gestão de pessoas. Use mensalmente.",
+        quadrantes: {
+            desenvolver: {
+                titulo: "🟢 DESENVOLVER",
+                subtitulo: "Alta Entrega (≥80%) + Boa Cultura (≥3.5/5)",
+                caracteristicas: "Profissionais de alto desempenho alinhados com valores da empresa. Seus melhores ativos.",
+                acoes: [
+                    "✅ Promover para posições de liderança ou especialização",
+                    "🚀 Dar projetos desafiadores e estratégicos que os tirem da zona de conforto",
+                    "💰 Investir em desenvolvimento executivo (cursos, mentorias, eventos)",
+                    "👥 Usar como mentores/coaches de novos colaboradores",
+                    "🎯 Aumentar autonomia e responsabilidades progressivamente",
+                    "💼 Discutir plano de carreira trimestral - mostre futuro claro",
+                    "🏆 Reconhecimento público constante - eles merecem e o time precisa ver"
+                ],
+                riscos: "⚠️ Perder para concorrência se não investir neles. Burnout se sobrecarregar sem suporte. Tédio se não desafiar.",
+                tempo: "📅 Conversa sobre carreira a cada 3 meses. Check-in semanal para garantir que estão felizes.",
+                investimento: "💵 Invista 50% do seu orçamento de desenvolvimento neste grupo - maior ROI."
+            },
+            alerta: {
+                titulo: "🟡 ALERTA VERMELHO",
+                subtitulo: "Alta Entrega (≥80%) + Má Cultura (<3.5/5)",
+                caracteristicas: "Bate números mas contamina o ambiente. 'Estrela tóxica'. Mais perigoso que você imagina.",
+                acoes: [
+                    "⚠️ Feedback DIRETO e IMEDIATO sobre comportamento inaceitável (use script de feedback)",
+                    "📋 Estabelecer limites CLAROS e consequências ESPECÍFICAS por escrito",
+                    "👔 Coaching comportamental OBRIGATÓRIO (externo se necessário)",
+                    "👀 Monitoramento PRÓXIMO das interações com time (pedir feedback anônimo)",
+                    "⏰ Prazo DEFINIDO para mudança: 30-60 dias máximo, não mais",
+                    "🎥 Considere gravações de reuniões para accountability",
+                    "📊 Métricas de cultura: NPS do time, turnover do setor, reclamações"
+                ],
+                riscos: "🚨 ALTO: Destruir moral do time inteiro. Perder seus MELHORES profissionais por causa dele. Criar cultura de medo/desrespeito.",
+                tempo: "⏰ Se não mudar SIGNIFICATIVAMENTE em 60 dias, DESLIGAR SEM DÓ - números NÃO justificam toxicidade NUNCA.",
+                principio: "🎯 REGRA: Um tóxico destrói o trabalho de 3 bons profissionais. Não vale a pena. NUNCA."
+            },
+            treinar: {
+                titulo: "🔵 TREINAR & DESENVOLVER",
+                subtitulo: "Baixa Entrega (<80%) + Boa Cultura (≥3.5/5)",
+                caracteristicas: "Atitude certa mas faltam habilidades. Alto potencial de crescimento. Seu melhor investimento.",
+                acoes: [
+                    "📚 Programa de capacitação INTENSIVO e ESTRUTURADO (não deixe solto)",
+                    "👥 Mentoria 1-on-1 com top performer do time (2h/semana mínimo)",
+                    "🎯 Acompanhamento DIÁRIO nas primeiras 2-3 semanas (sim, diário!)",
+                    "🔧 Simplificar processos e dar ferramentas/templates melhores",
+                    "📊 Definir micro-metas SEMANAIS crescentes (baby steps funcionam)",
+                    "🎬 Role-plays 3x/semana até pegar o jeito",
+                    "💬 Feedback CONSTANTE - diário no início, depois semanal",
+                    "🏆 Celebrar CADA pequena vitória - construir confiança"
+                ],
+                riscos: "⚠️ Frustração e desistência se não ver progresso rápido. Sobrecarga se expectativas muito altas.",
+                tempo: "📅 Reavaliar em 90 dias. Se evoluiu, continuar investindo. Se não, reposicionar para outra função ou desligar com respeito.",
+                investimento: "💵 Invista 30% do seu tempo de gestão aqui - retorno alto em 3-6 meses."
+            },
+            desligar: {
+                titulo: "🔴 DESLIGAR COM RESPEITO",
+                subtitulo: "Baixa Entrega (<80%) + Má Cultura (<3.5/5)",
+                caracteristicas: "Não entrega E ainda contamina. Sem perspectiva de melhora. Decisão difícil mas necessária.",
+                acoes: [
+                    "📋 Documentar TUDO: problemas de desempenho E comportamento com datas",
+                    "💬 Dar feedback formal com registro em 1-on-1 documentado",
+                    "📊 PIP (Plano de Melhoria) com metas CLARAS e MENSURÁVEIS em 30 dias",
+                    "👀 Acompanhamento SEMANAL do PIP com check-ins documentados",
+                    "⚖️ Se não melhorar em 30 dias, preparar desligamento (RH + Jurídico)",
+                    "🤝 Conduzir desligamento com RESPEITO e DIGNIDADE (sempre)",
+                    "📝 Carta de desligamento clara sobre motivos (proteção legal)",
+                    "🎯 Exit interview para aprender (pode ter insights valiosos)"
+                ],
+                riscos: "⚠️ Manter muito tempo DRENA energia do time E do líder. Contamina cultura. Atrasa resultados.",
+                tempo: "⏰ Máximo 60 dias de tentativa. Se sem evolução, desligar AGORA. Não prolongue sofrimento.",
+                mindset: "💡 Desligar bem feito é ato de liderança. Você está fazendo favor para pessoa E para time. Não é crueldade, é clareza."
+            }
+        },
+        dicasCampo: [
+            "📊 Avalie OBJETIVAMENTE - não deixe simpatia pessoal distorcer números",
+            "⚠️ Profissional no quadrante ALERTA é MAIS perigoso que DESLIGAR - age rápido",
+            "🎯 80% de entrega é o mínimo aceitável (ajuste conforme seu padrão/mercado)",
+            "💪 Invista 80% do seu tempo/energia nos quadrantes DESENVOLVER e TREINAR",
+            "🚫 NUNCA promova quem está em ALERTA só porque 'vende bem' - vai destruir time",
+            "⏰ Revisite a matriz MENSALMENTE - pessoas mudam de quadrante",
+            "📈 Use métricas objetivas: entregas, feedbacks 360, NPS interno, turnover",
+            "🎨 Mostre a matriz para o TIME - cria clareza sobre expectativas",
+            "💼 Decisões de promoção/demissão baseadas na matriz = menos erro",
+            "⚡ Seja rápido em promover (desenvolver) e em desligar - lentidão mata momentum"
+        ],
+        comoUsar: "🎯 TODO MÊS: 1) Plote cada pessoa na matriz, 2) Identifique ações por quadrante, 3) Execute com disciplina"
+    },
+    
+    pdi: {
+        titulo: "PDI - Plano de Desenvolvimento Individual",
+        descricao: "Roadmap personalizado para crescimento. Não é burocracia, é ferramenta de transformação.",
+        templates: [
+            {
+                nome: "PDI para DESENVOLVER (Alto Performer → Liderança)",
+                exemplo: {
+                    pontoForte: "Excelência em vendas consultivas, relacionamento duradouro com clientes, resultados 140% da meta consistentemente",
+                    pontoMelhoria: "Desenvolver habilidades de liderança, gestão de equipe e visão estratégica de negócio",
+                    acaoPratica: "• Mentorar 2 consultores júnior (2h/semana cada)\n• Liderar projeto piloto de expansão (nova região)\n• Participar de reuniões estratégicas mensais\n• Curso de Liderança (40h)\n• Shadowing com diretor comercial (1 dia/semana)",
+                    prazo: "6 meses com checkpoints mensais",
+                    responsavel: "Gestor direto + Diretor Comercial + RH",
+                    metricas: "Mentees batendo 80% meta + Projeto entregue no prazo + Feedback 360° ≥4.0"
+                }
+            },
+            {
+                nome: "PDI para TREINAR (Potencial Alto → Performance)",
+                exemplo: {
+                    pontoForte: "Organização impecável, atitude positiva contagiante, aprende rápido, trabalha em equipe",
+                    pontoMelhoria: "Técnicas de fechamento, negociação comercial, gestão de objeções, segurança em reuniões",
+                    acaoPratica: "• 3 role-plays semanais com gestor (situações reais)\n• Acompanhar top performer em 15 reuniões (shadowing)\n• Curso intensivo de vendas online (20h)\n• Gravar 5 reuniões próprias e revisar com mentor\n• Apresentar 1 case de sucesso por semana em 1-on-1",
+                    prazo: "90 dias com revisão semanal",
+                    responsavel: "Gestor direto + Mentor (top performer)",
+                    metricas: "Atingir 70% meta no mês 3 + Taxa conversão ≥25% + Confiança autorrelatada ≥4/5"
+                }
+            },
+            {
+                nome: "PDI para ALERTA (Comportamental URGENTE)",
+                exemplo: {
+                    pontoForte: "Resultados comerciais acima da meta (115%), conhecimento técnico profundo",
+                    pontoMelhoria: "Comunicação respeitosa, inteligência emocional, colaboração em equipe, receber feedback",
+                    acaoPratica: "• Coaching de inteligência emocional (sessões semanais, 8 semanas)\n• Pedir feedback escrito anônimo do time semanalmente\n• Participar ativamente de dinâmicas de integração (obrigatório)\n• Praticar escuta ativa em reuniões (não interromper, anotar antes de falar)\n• Ler 'Comunicação Não-Violenta' e apresentar aprendizados",
+                    prazo: "60 dias (PRAZO FINAL - não negociável)",
+                    responsavel: "Gestor direto + Coach externo + RH (monitoramento)",
+                    metricas: "Zero reclamações formais + NPS time de 3→7 + Feedback 360° de 2→4 mínimo"
                 }
             }
-
-            salvarEdicao() {
-                const index = this.colaboradores.findIndex(c => c.id === this.colaboradorEditando.id);
-                if (index !== -1) {
-                    this.colaboradores[index] = this.colaboradorEditando;
-                    this.salvarDados();
-                }
-                this.colaboradorEditando = null;
-                this.paginaAtual = 'colaboradores';
-                this.render();
+        ],
+        dicasCampo: [
+            "🎯 PDI NÃO é punição - é investimento e demonstração de que você acredita na pessoa",
+            "📅 Prazos realistas: 30-60 dias para comportamental, 90-180 dias para habilidades",
+            "✅ Checkpoints SEMANAIS - não espere o fim do prazo para avaliar",
+            "📊 Métricas CLARAS - como saberemos que evoluiu? Defina ANTES",
+            "🤝 Construa JUNTO com o colaborador, não IMPONHA de cima pra baixo",
+            "🔄 PDI é VIVO: revise e ajuste conforme progresso (flexibilidade com accountability)",
+            "💰 Invista recursos: tempo, dinheiro, ferramentas - PDI sem recurso é mentira",
+            "🎓 Misture teoria e prática - 20% curso, 80% aplicação real",
+            "👥 Envolva outras pessoas - mentores, coaches, pares - não seja o único",
+            "📝 Documente TUDO - evolução, feedbacks, marcos - vira case de sucesso depois"
+        ],
+        errosComuns: [
+            "❌ PDI genérico copiado da internet - personalize!",
+            "❌ Sem métricas claras de sucesso - como medir evolução?",
+            "❌ Prazos irreais (mudar comportamento em 1 semana)",
+            "❌ Sem acompanhamento/checkpoints - vira gaveta",
+            "❌ Focar só em fraquezas, esquecer de potencializar forças",
+            "❌ Não envolver a pessoa na construção - imposição não funciona"
+        ]
+    },
+    
+    oneOnOne: {
+        titulo: "1-on-1: A Ferramenta Mais Poderosa do Líder",
+        descricao: "Reuniões semanais individuais para construir relacionamento e performance. NÃO é opcional, é essencial.",
+        estrutura: [
+            {
+                bloco: "Check-in Pessoal (5 min)",
+                perguntas: [
+                    "Como você está? (pessoal E profissional - se importa de verdade)",
+                    "Como está o clima em casa/família?",
+                    "Está conseguindo equilibrar trabalho e vida pessoal?",
+                    "Dormindo bem? Comendo bem? (saúde importa)"
+                ],
+                objetivo: "Construir CONFIANÇA genuína, demonstrar cuidado REAL pela pessoa (não fake)",
+                dica: "👂 ESCUTE de verdade. Não finja interesse. Se percebe problema sério (saúde mental, etc), ofereça ajuda/recursos."
+            },
+            {
+                bloco: "Revisão de Metas & Obstáculos (10 min)",
+                perguntas: [
+                    "Como estão seus números esta semana vs meta?",
+                    "Quais obstáculos/bloqueios você enfrentou?",
+                    "O que você fez diferente que FUNCIONOU?",
+                    "Do que você precisa de MIM para destravar?",
+                    "Há algo que EU faço que está te atrapalhando?"
+                ],
+                objetivo: "Acompanhar progresso, identificar bloqueios CEDO, remover obstáculos",
+                dica: "🎯 Foque em REMOVER barreiras, não em COBRAR. Seu papel é FACILITAR, não pressionar."
+            },
+            {
+                bloco: "Desenvolvimento & Aprendizado (10 min)",
+                perguntas: [
+                    "O que você APRENDEU esta semana?",
+                    "Onde você QUER crescer?",
+                    "Como EU posso te ajudar a chegar lá?",
+                    "Que nova habilidade você quer desenvolver?",
+                    "Qual seu próximo passo de carreira? (seja honesto)"
+                ],
+                objetivo: "Investir no crescimento, mostrar que você se importa com a CARREIRA dele, não só com números",
+                dica: "💡 Anote e CUMPRA: se prometeu ajudar, ajude MESMO. Credibilidade se constrói aqui."
+            },
+            {
+                bloco: "Próximos Passos & Feedback Reverso (5 min)",
+                perguntas: [
+                    "Quais suas 3 prioridades TOP para semana que vem?",
+                    "Do que você precisa de mim especificamente?",
+                    "Algo que EU possa fazer DIFERENTE/MELHOR como seu líder?",
+                    "Estou sendo claro nas expectativas?",
+                    "Me dê um feedback: algo que eu devo mudar?"
+                ],
+                objetivo: "Definir próximos passos, abrir espaço para feedback REVERSO (essencial!)",
+                dica: "🙏 Peça feedback e AGRADEÇA (mesmo se doer). Não se defenda. Apenas escute e melhore."
             }
+        ],
+        regrasOuro: [
+            "🚫 NUNCA cancele 1-on-1 - mostra que a pessoa NÃO é prioridade (destrói confiança)",
+            "👂 Ouça 70%, fale 30% - não transforme em MONÓLOGO seu",
+            "📝 Anote compromissos e CUMPRA - credibilidade está aqui (se prometeu, entregue)",
+            "🔒 CONFIDENCIAL - o que é dito ali, fica ali (exceto coisas ilegais/antiéticas)",
+            "⏰ Mesma hora, mesmo dia toda semana - cria RITUAL e previsibilidade",
+            "📱 Desligue celular, feche laptop - atenção TOTAL (seja presente de verdade)",
+            "🎯 Deixe a PESSOA conduzir a pauta - não imponha sua agenda",
+            "💬 Seja vulnerável também - compartilhe seus desafios (humaniza)",
+            "🏆 Celebre vitórias - reconheça progressos (por menores que sejam)",
+            "⚡ Dê feedback em TEMPO REAL - não guarde para 1-on-1 (feedback quente funciona melhor)"
+        ],
+        errosComuns: [
+            "❌ Usar 1-on-1 SÓ para cobrar números/resultados",
+            "❌ Falar 90% do tempo sobre VOCÊ e seus problemas",
+            "❌ Resolver operacional do dia-a-dia (isso é para Slack/WhatsApp)",
+            "❌ Não anotar NADA - memória falha, parece que não se importa",
+            "❌ Cancelar porque 'está tudo bem' - manutenção é tão importante quanto conserto",
+            "❌ Fazer só quando TEM PROBLEMA - deveria ser preventivo",
+            "❌ Não pedir feedback sobre SUA liderança - arrogância mata crescimento",
+            "❌ Seguir script rígido - seja humano, adapte ao momento/pessoa"
+        ],
+        impacto: "💎 Times com 1-on-1 semanal têm: 3x mais engajamento, 50% menos turnover, 40% mais performance. É o maior ROI de tempo de um líder."
+    }
+};
 
-            // ===== CÁLCULOS E ANÁLISES =====
-
-            calcularMediaGeral(colaborador) {
-                const mediaKPIs = (colaborador.kpis.entregas + colaborador.kpis.produtividade) / 2;
-                const mediaCHA = (colaborador.cha.conhecimento + colaborador.cha.habilidade + colaborador.cha.atitude) / 3;
-                const mediaComp = Object.values(colaborador.competencias).reduce((a, b) => a + b, 0) / 6;
-                const media360 = Object.values(colaborador.avaliacao360).reduce((a, b) => a + b, 0) / 4;
-                
-                return ((mediaKPIs + mediaCHA + mediaComp + media360) / 4).toFixed(1);
-            }
-
-            determinarMatrizDesempenho(colaborador) {
-                const entrega = colaborador.kpis.produtividade;
-                const cultura = this.calcularMediaGeral(colaborador);
-
-                if (entrega >= 80 && cultura >= 4) return 'Desenvolver';
-                if (entrega >= 80 && cultura < 4) return 'Alerta';
-                if (entrega < 80 && cultura >= 4) return 'Treinar';
-                return 'Desligar';
-            }
-
-            getCorMatriz(tipo) {
-                const cores = {
-                    'Desenvolver': 'bg-green-100 border-green-500 text-green-800',
-                    'Alerta': 'bg-yellow-100 border-yellow-500 text-yellow-800',
-                    'Treinar': 'bg-blue-100 border-blue-500 text-blue-800',
-                    'Desligar': 'bg-red-100 border-red-500 text-red-800'
-                };
-                return cores[tipo] || 'bg-gray-100 border-gray-500';
-            }
-
-            calcularProgressoMeta() {
-                const totalVendido = this.colaboradores.reduce((sum, c) => sum + (c.metas.mensuravel || 0), 0);
-                const percentual = (totalVendido / this.metaMensal) * 100;
-                return {
-                    total: totalVendido,
-                    percentual: percentual.toFixed(1),
-                    faltam: this.metaMensal - totalVendido
-                };
-            }
-
-            // ===== PERSISTÊNCIA =====
-
-            salvarDados() {
-                localStorage.setItem('avaliacaoColaboradores', JSON.stringify(this.colaboradores));
-                localStorage.setItem('metaMensal', this.metaMensal);
-            }
-
-            carregarDados() {
-                const dados = localStorage.getItem('avaliacaoColaboradores');
-                if (dados) {
-                    this.colaboradores = JSON.parse(dados);
-                }
-                const meta = localStorage.getItem('metaMensal');
-                if (meta) {
-                    this.metaMensal = parseFloat(meta);
-                }
-            }
-
-            // ===== RENDERIZAÇÃO =====
-
-            render() {
-                this.carregarDados();
-                const app = document.getElementById('app');
-
-                if (this.paginaAtual === 'home') {
-                    app.innerHTML = this.renderHome();
-                } else if (this.paginaAtual === 'colaboradores') {
-                    app.innerHTML = this.renderColaboradores();
-                } else if (this.paginaAtual === 'editar') {
-                    app.innerHTML = this.renderEditar();
-                } else if (this.paginaAtual === 'dashboard') {
-                    app.innerHTML = this.renderDashboard();
-                } else if (this.paginaAtual === 'config') {
-                    app.innerHTML = this.renderConfig();
-                }
-            }
-
-            renderHome() {
-                const progresso = this.calcularProgressoMeta();
-                
-                return `
-                    <div class="min-h-screen bg-gray-50">
-                        <!-- Header -->
-                        <div class="bg-cm-escuro text-white shadow-lg">
-                            <div class="max-w-7xl mx-auto px-4 py-6">
-                                <h1 class="text-3xl font-bold">🎯 Avaliação de Desempenho</h1>
-                                <p class="text-sm mt-2 opacity-90">8 Ferramentas para Gestão do Squad</p>
-                            </div>
-                        </div>
-
-                        <!-- Menu -->
-                        <div class="bg-white shadow border-b">
-                            <div class="max-w-7xl mx-auto flex gap-4 px-4 py-3 overflow-x-auto">
-                                <button onclick="app.paginaAtual = 'home'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-cm-laranja text-white">🏠 Início</button>
-                                <button onclick="app.paginaAtual = 'colaboradores'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">👥 Colaboradores</button>
-                                <button onclick="app.paginaAtual = 'dashboard'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">📊 Dashboard</button>
-                                <button onclick="app.paginaAtual = 'config'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">⚙️ Config</button>
-                            </div>
-                        </div>
-
-                        <div class="max-w-7xl mx-auto px-4 py-8">
-                            <!-- Meta Mensal -->
-                            <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg p-6 mb-8">
-                                <div class="flex justify-between items-center mb-4">
-                                    <div>
-                                        <h2 class="text-2xl font-bold">Meta do Mês</h2>
-                                        <p class="text-lg opacity-90">R$ ${this.metaMensal.toLocaleString('pt-BR')}</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="text-4xl font-bold">${progresso.percentual}%</div>
-                                        <div class="text-sm opacity-90">${this.colaboradores.length} colaboradores</div>
-                                    </div>
-                                </div>
-                                <div class="w-full bg-white bg-opacity-30 rounded-full h-6">
-                                    <div class="bg-white h-6 rounded-full flex items-center justify-center text-orange-600 font-bold text-sm" style="width: ${Math.min(progresso.percentual, 100)}%">
-                                        R$ ${progresso.total.toLocaleString('pt-BR')}
-                                    </div>
-                                </div>
-                                <p class="text-sm mt-2 opacity-90">Faltam R$ ${progresso.faltam.toLocaleString('pt-BR')} para a meta</p>
-                            </div>
-
-                            <!-- 8 Ferramentas -->
-                            <h2 class="text-2xl font-bold text-cm-escuro mb-6">8 Ferramentas de Avaliação</h2>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <!-- 1. KPIs -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">1</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">KPIs</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Indicadores de Desempenho</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>📈 Entregas</li>
-                                        <li>⚡ Produtividade</li>
-                                        <li>❌ Erros</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 2. SMART -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">2</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">SMART</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Metas Inteligentes</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>✓ Específica</li>
-                                        <li>✓ Mensurável</li>
-                                        <li>✓ Atingível</li>
-                                        <li>✓ Relevante</li>
-                                        <li>✓ Temporal</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 3. CHA -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">3</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">CHA</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Conhecimento, Habilidade e Atitude</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>🧠 Conhecimento</li>
-                                        <li>💪 Habilidade</li>
-                                        <li>⭐ Atitude</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 4. Competências -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">4</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">Competências</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Escala de 1 a 5</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>📋 Responsabilidade</li>
-                                        <li>💬 Comunicação</li>
-                                        <li>📊 Organização</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 5. Feedback -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">5</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">Feedback</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Estruturado em 4 etapas</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>1️⃣ Funcionando</li>
-                                        <li>2️⃣ Melhorar</li>
-                                        <li>3️⃣ Impacto</li>
-                                        <li>4️⃣ Ajuste</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 6. 360° -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">6</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">360°</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Avaliação Completa</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>👤 Autoavaliação</li>
-                                        <li>👔 Líder</li>
-                                        <li>👥 Pares</li>
-                                        <li>👨‍💼 Subordinados</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 7. Matriz -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">7</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">Matriz</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Desempenho x Comportamento</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>🟢 Desenvolver</li>
-                                        <li>🟡 Alerta</li>
-                                        <li>🔵 Treinar</li>
-                                        <li>🔴 Desligar</li>
-                                    </ul>
-                                </div>
-
-                                <!-- 8. PDI -->
-                                <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">8</div>
-                                        <h3 class="text-lg font-bold text-cm-escuro">PDI</h3>
-                                    </div>
-                                    <p class="text-gray-600 text-sm mb-3">Plano de Desenvolvimento</p>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li>💪 Ponto Forte</li>
-                                        <li>📈 Melhoria</li>
-                                        <li>🎯 Ação</li>
-                                        <li>📅 Prazo</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Ação Rápida -->
-                            <div class="mt-12 text-center">
-                                <button onclick="app.adicionarColaborador()" class="bg-cm-laranja hover:opacity-90 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg">
-                                    ➕ Adicionar Colaborador
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            renderColaboradores() {
-                return `
-                    <div class="min-h-screen bg-gray-50">
-                        <div class="bg-cm-escuro text-white shadow-lg">
-                            <div class="max-w-7xl mx-auto px-4 py-6">
-                                <h1 class="text-3xl font-bold">👥 Gestão de Colaboradores</h1>
-                            </div>
-                        </div>
-
-                        <div class="bg-white shadow border-b">
-                            <div class="max-w-7xl mx-auto flex gap-4 px-4 py-3 overflow-x-auto">
-                                <button onclick="app.paginaAtual = 'home'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">🏠 Início</button>
-                                <button onclick="app.paginaAtual = 'colaboradores'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-cm-laranja text-white">👥 Colaboradores</button>
-                                <button onclick="app.paginaAtual = 'dashboard'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">📊 Dashboard</button>
-                                <button onclick="app.paginaAtual = 'config'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">⚙️ Config</button>
-                            </div>
-                        </div>
-
-                        <div class="max-w-7xl mx-auto px-4 py-8">
-                            <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-2xl font-bold text-cm-escuro">Lista de Colaboradores (${this.colaboradores.length})</h2>
-                                <button onclick="app.adicionarColaborador()" class="bg-cm-laranja hover:opacity-90 text-white px-6 py-3 rounded-lg font-bold">
-                                    ➕ Novo Colaborador
-                                </button>
-                            </div>
-
-                            ${this.colaboradores.length === 0 ? `
-                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
-                                    <h3 class="text-lg font-bold text-yellow-800 mb-2">Nenhum colaborador cadastrado</h3>
-                                    <p class="text-gray-700">Clique em "Novo Colaborador" para começar!</p>
-                                </div>
-                            ` : `
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    ${this.colaboradores.map(c => {
-                                        const mediaGeral = this.calcularMediaGeral(c);
-                                        const matriz = this.determinarMatrizDesempenho(c);
-                                        const corMatriz = this.getCorMatriz(matriz);
-                                        
-                                        return `
-                                            <div class="bg-white rounded-xl shadow-lg overflow-hidden border-t-4 border-cm-laranja">
-                                                <div class="p-6">
-                                                    <div class="flex justify-between items-start mb-4">
-                                                        <div>
-                                                            <h3 class="text-xl font-bold text-cm-escuro">${c.nome}</h3>
-                                                            <p class="text-gray-600 text-sm">${c.cargo}</p>
-                                                        </div>
-                                                        <div class="text-right">
-                                                            <div class="text-3xl font-bold text-cm-laranja">${mediaGeral}</div>
-                                                            <div class="text-xs text-gray-500">Média</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-4">
-                                                        <div class="flex justify-between text-sm mb-2">
-                                                            <span class="text-gray-600">Classificação</span>
-                                                            <span class="font-bold text-cm-escuro">${matriz}</span>
-                                                        </div>
-                                                        <div class="px-4 py-2 rounded-lg text-center font-bold ${corMatriz}">
-                                                            ${matriz}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="grid grid-cols-3 gap-2 mb-4 text-center text-xs">
-                                                        <div>
-                                                            <div class="font-bold text-lg text-cm-laranja">${c.kpis.produtividade}%</div>
-                                                            <div class="text-gray-600">Produtividade</div>
-                                                        </div>
-                                                        <div>
-                                                            <div class="font-bold text-lg text-cm-laranja">${c.cha.atitude}/5</div>
-                                                            <div class="text-gray-600">Atitude</div>
-                                                        </div>
-                                                        <div>
-                                                            <div class="font-bold text-lg text-cm-laranja">R$ ${(c.metas.mensuravel || 0).toLocaleString('pt-BR')}</div>
-                                                            <div class="text-gray-600">Meta</div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="flex gap-2">
-                                                        <button onclick="app.editarColaborador(${c.id})" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold text-sm">
-                                                            ✏️ Avaliar
-                                                        </button>
-                                                        <button onclick="app.excluirColaborador(${c.id})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm">
-                                                            🗑️
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
-                                    }).join('')}
-                                </div>
-                            `}
-                        </div>
-                    </div>
-                `;
-            }
-
-            renderEditar() {
-                const c = this.colaboradorEditando;
-                if (!c) return '';
-
-                return `
-                    <div class="min-h-screen bg-gray-50">
-                        <div class="bg-cm-escuro text-white shadow-lg">
-                            <div class="max-w-7xl mx-auto px-4 py-6">
-                                <h1 class="text-3xl font-bold">✏️ Avaliando: ${c.nome}</h1>
-                            </div>
-                        </div>
-
-                        <div class="max-w-7xl mx-auto px-4 py-8">
-                            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
-                                ${this.renderFormularioAvaliacao(c)}
-                                
-                                <div class="flex gap-4 mt-8">
-                                    <button onclick="app.salvarEdicao()" class="flex-1 bg-cm-laranja hover:opacity-90 text-white py-3 rounded-lg font-bold text-lg">
-                                        💾 Salvar Avaliação
-                                    </button>
-                                    <button onclick="app.paginaAtual = 'colaboradores'; app.render();" class="bg-gray-400 hover:bg-gray-500 text-white px-8 py-3 rounded-lg font-bold text-lg">
-                                        ❌ Cancelar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            renderFormularioAvaliacao(c) {
-                return `
-                    <!-- Abas de Ferramentas -->
-                    <div class="space-y-8">
-                        <!-- 1. KPIs -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">1</span>
-                                Indicadores de Desempenho (KPIs)
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">Entregas (%)</label>
-                                    <input type="number" value="${c.kpis.entregas}" onchange="app.colaboradorEditando.kpis.entregas = parseFloat(this.value)" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" min="0" max="100">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">Produtividade (%)</label>
-                                    <input type="number" value="${c.kpis.produtividade}" onchange="app.colaboradorEditando.kpis.produtividade = parseFloat(this.value)" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" min="0" max="100">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">Erros (%)</label>
-                                    <input type="number" value="${c.kpis.erros}" onchange="app.colaboradorEditando.kpis.erros = parseFloat(this.value)" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" min="0" max="100">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 2. SMART -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">2</span>
-                                Metas SMART
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">📍 Específica</label>
-                                    <input type="text" value="${c.metas.especifica}" onchange="app.colaboradorEditando.metas.especifica = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Ex: Vender 100k em fevereiro">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">📊 Mensurável (R$)</label>
-                                    <input type="number" value="${c.metas.mensuravel}" onchange="app.colaboradorEditando.metas.mensuravel = parseFloat(this.value)" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="100000">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">✓ Atingível</label>
-                                    <input type="text" value="${c.metas.atingivel}" onchange="app.colaboradorEditando.metas.atingivel = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Com 20 reuniões/semana">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">🎯 Relevante</label>
-                                    <input type="text" value="${c.metas.relevante}" onchange="app.colaboradorEditando.metas.relevante = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Contribui para meta do time">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">⏰ Temporal</label>
-                                    <input type="text" value="${c.metas.temporal}" onchange="app.colaboradorEditando.metas.temporal = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Até 28/02/2026">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. CHA -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">3</span>
-                                CHA - Conhecimento, Habilidade e Atitude
-                            </h3>
-                            <div class="space-y-4">
-                                ${this.renderEscala('Conhecimento (sabe o que fazer?)', c.cha.conhecimento, 'app.colaboradorEditando.cha.conhecimento')}
-                                ${this.renderEscala('Habilidade (consegue executar?)', c.cha.habilidade, 'app.colaboradorEditando.cha.habilidade')}
-                                ${this.renderEscala('Atitude (quer fazer bem feito?)', c.cha.atitude, 'app.colaboradorEditando.cha.atitude')}
-                            </div>
-                        </div>
-
-                        <!-- 4. Competências -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">4</span>
-                                Avaliação de Competências
-                            </h3>
-                            <div class="space-y-4">
-                                ${this.renderEscala('Responsabilidade', c.competencias.responsabilidade, 'app.colaboradorEditando.competencias.responsabilidade')}
-                                ${this.renderEscala('Comunicação', c.competencias.comunicacao, 'app.colaboradorEditando.competencias.comunicacao')}
-                                ${this.renderEscala('Organização', c.competencias.organizacao, 'app.colaboradorEditando.competencias.organizacao')}
-                                ${this.renderEscala('Proatividade', c.competencias.proatividade, 'app.colaboradorEditando.competencias.proatividade')}
-                                ${this.renderEscala('Trabalho em Equipe', c.competencias.trabalhoEquipe, 'app.colaboradorEditando.competencias.trabalhoEquipe')}
-                                ${this.renderEscala('Liderança', c.competencias.lideranca, 'app.colaboradorEditando.competencias.lideranca')}
-                            </div>
-                        </div>
-
-                        <!-- 5. Feedback Estruturado -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">5</span>
-                                Feedback Estruturado
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">1️⃣ O que está funcionando</label>
-                                    <textarea value="${c.feedback.funcionando}" onchange="app.colaboradorEditando.feedback.funcionando = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" rows="2" placeholder="Pontos positivos...">${c.feedback.funcionando}</textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">2️⃣ O que precisa melhorar</label>
-                                    <textarea value="${c.feedback.melhorar}" onchange="app.colaboradorEditando.feedback.melhorar = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" rows="2" placeholder="Oportunidades de melhoria...">${c.feedback.melhorar}</textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">3️⃣ Impacto do comportamento</label>
-                                    <textarea value="${c.feedback.impacto}" onchange="app.colaboradorEditando.feedback.impacto = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" rows="2" placeholder="Consequências...">${c.feedback.impacto}</textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">4️⃣ Ajuste esperado / Próximo passo</label>
-                                    <textarea value="${c.feedback.ajuste}" onchange="app.colaboradorEditando.feedback.ajuste = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" rows="2" placeholder="Plano de ação...">${c.feedback.ajuste}</textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 6. Avaliação 360° -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">6</span>
-                                Avaliação 360°
-                            </h3>
-                            <div class="space-y-4">
-                                ${this.renderEscala('Autoavaliação', c.avaliacao360.autoavaliacao, 'app.colaboradorEditando.avaliacao360.autoavaliacao')}
-                                ${this.renderEscala('Avaliação do Líder', c.avaliacao360.lider, 'app.colaboradorEditando.avaliacao360.lider')}
-                                ${this.renderEscala('Avaliação dos Pares', c.avaliacao360.pares, 'app.colaboradorEditando.avaliacao360.pares')}
-                                ${this.renderEscala('Avaliação dos Subordinados', c.avaliacao360.subordinados, 'app.colaboradorEditando.avaliacao360.subordinados')}
-                            </div>
-                        </div>
-
-                        <!-- 8. PDI -->
-                        <div class="border-2 border-cm-laranja rounded-lg p-6">
-                            <h3 class="text-xl font-bold text-cm-escuro mb-4 flex items-center gap-2">
-                                <span class="w-8 h-8 bg-cm-laranja rounded-full flex items-center justify-center text-white text-sm">8</span>
-                                PDI - Plano de Desenvolvimento Individual
-                            </h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">💪 Ponto Forte</label>
-                                    <input type="text" value="${c.pdi.pontoForte}" onchange="app.colaboradorEditando.pdi.pontoForte = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Principal qualidade">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">📈 Ponto de Melhoria</label>
-                                    <input type="text" value="${c.pdi.pontoMelhoria}" onchange="app.colaboradorEditando.pdi.pontoMelhoria = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Área a desenvolver">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">🎯 Ação Prática</label>
-                                    <input type="text" value="${c.pdi.acaoPratica}" onchange="app.colaboradorEditando.pdi.acaoPratica = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="O que será feito">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">📅 Prazo</label>
-                                    <input type="text" value="${c.pdi.prazo}" onchange="app.colaboradorEditando.pdi.prazo = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Até quando">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold mb-2">👤 Responsável</label>
-                                    <input type="text" value="${c.pdi.responsavel}" onchange="app.colaboradorEditando.pdi.responsavel = this.value" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg" placeholder="Quem acompanhará">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            renderEscala(label, valor, caminho) {
-                return `
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-sm font-semibold">${label}</label>
-                            <span class="text-2xl font-bold text-cm-laranja">${valor}/5</span>
-                        </div>
-                        <div class="flex gap-2">
-                            ${[1, 2, 3, 4, 5].map(i => `
-                                <button onclick="${caminho} = ${i}; app.render();" 
-                                    class="flex-1 py-3 rounded-lg font-bold ${i <= valor ? 'bg-cm-laranja text-white' : 'bg-gray-200 text-gray-600'}">
-                                    ${i}
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            renderDashboard() {
-                const progresso = this.calcularProgressoMeta();
-                
-                return `
-                    <div class="min-h-screen bg-gray-50">
-                        <div class="bg-cm-escuro text-white shadow-lg">
-                            <div class="max-w-7xl mx-auto px-4 py-6">
-                                <h1 class="text-3xl font-bold">📊 Dashboard Geral</h1>
-                            </div>
-                        </div>
-
-                        <div class="bg-white shadow border-b">
-                            <div class="max-w-7xl mx-auto flex gap-4 px-4 py-3 overflow-x-auto">
-                                <button onclick="app.paginaAtual = 'home'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">🏠 Início</button>
-                                <button onclick="app.paginaAtual = 'colaboradores'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">👥 Colaboradores</button>
-                                <button onclick="app.paginaAtual = 'dashboard'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-cm-laranja text-white">📊 Dashboard</button>
-                                <button onclick="app.paginaAtual = 'config'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">⚙️ Config</button>
-                            </div>
-                        </div>
-
-                        <div class="max-w-7xl mx-auto px-4 py-8">
-                            <!-- Métricas Principais -->
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-500">
-                                    <div class="text-gray-600 text-sm mb-2">Total Colaboradores</div>
-                                    <div class="text-4xl font-bold text-blue-600">${this.colaboradores.length}</div>
-                                </div>
-                                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500">
-                                    <div class="text-gray-600 text-sm mb-2">Meta Mensal</div>
-                                    <div class="text-2xl font-bold text-green-600">R$ ${this.metaMensal.toLocaleString('pt-BR')}</div>
-                                </div>
-                                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-orange-500">
-                                    <div class="text-gray-600 text-sm mb-2">Alcançado</div>
-                                    <div class="text-2xl font-bold text-orange-600">R$ ${progresso.total.toLocaleString('pt-BR')}</div>
-                                </div>
-                                <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-purple-500">
-                                    <div class="text-gray-600 text-sm mb-2">% da Meta</div>
-                                    <div class="text-4xl font-bold text-purple-600">${progresso.percentual}%</div>
-                                </div>
-                            </div>
-
-                            <!-- Matriz de Desempenho -->
-                            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-                                <h2 class="text-2xl font-bold text-cm-escuro mb-6">📊 Matriz: Desempenho x Comportamento</h2>
-                                
-                                <div class="grid grid-cols-2 gap-4">
-                                    ${['Desenvolver', 'Alerta', 'Treinar', 'Desligar'].map(tipo => {
-                                        const colabs = this.colaboradores.filter(c => this.determinarMatrizDesempenho(c) === tipo);
-                                        const cor = this.getCorMatriz(tipo);
-                                        return `
-                                            <div class="matriz-box ${cor} rounded-lg p-4">
-                                                <h3 class="font-bold text-lg mb-2">${tipo}</h3>
-                                                <div class="text-3xl font-bold mb-2">${colabs.length}</div>
-                                                <div class="text-xs space-y-1">
-                                                    ${colabs.map(c => `<div>• ${c.nome}</div>`).join('') || '<div class="text-gray-400">Nenhum</div>'}
-                                                </div>
-                                            </div>
-                                        `;
-                                    }).join('')}
-                                </div>
-
-                                <div class="mt-6 bg-gray-50 p-4 rounded-lg">
-                                    <h4 class="font-bold mb-2">💡 Recomendações:</h4>
-                                    <ul class="text-sm text-gray-700 space-y-1">
-                                        <li><strong>🟢 Desenvolver:</strong> Alta entrega + Boa cultura → Promover e desafiar</li>
-                                        <li><strong>🟡 Alerta:</strong> Alta entrega + Má cultura → Feedback sobre comportamento</li>
-                                        <li><strong>🔵 Treinar:</strong> Baixa entrega + Boa cultura → Capacitar e apoiar</li>
-                                        <li><strong>🔴 Desligar:</strong> Baixa entrega + Má cultura → Considerar desligamento</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Ranking -->
-                            <div class="bg-white rounded-xl shadow-lg p-8">
-                                <h2 class="text-2xl font-bold text-cm-escuro mb-6">🏆 Ranking de Desempenho</h2>
-                                
-                                ${this.colaboradores.length === 0 ? `
-                                    <p class="text-gray-500 text-center py-8">Nenhum colaborador para exibir</p>
-                                ` : `
-                                    <div class="space-y-3">
-                                        ${this.colaboradores
-                                            .map(c => ({ ...c, media: parseFloat(this.calcularMediaGeral(c)) }))
-                                            .sort((a, b) => b.media - a.media)
-                                            .map((c, index) => `
-                                                <div class="flex items-center gap-4 p-4 rounded-lg ${index === 0 ? 'bg-yellow-50 border-2 border-yellow-400' : 'bg-gray-50'}">
-                                                    <div class="w-12 h-12 rounded-full ${index === 0 ? 'bg-yellow-400' : index === 1 ? 'bg-gray-300' : index === 2 ? 'bg-orange-300' : 'bg-gray-200'} flex items-center justify-center font-bold text-lg">
-                                                        ${index + 1}
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <div class="font-bold text-lg">${c.nome}</div>
-                                                        <div class="text-sm text-gray-600">${this.determinarMatrizDesempenho(c)}</div>
-                                                    </div>
-                                                    <div class="text-right">
-                                                        <div class="text-2xl font-bold text-cm-laranja">${c.media}</div>
-                                                        <div class="text-xs text-gray-500">Média Geral</div>
-                                                    </div>
-                                                </div>
-                                            `).join('')}
-                                    </div>
-                                `}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            renderConfig() {
-                return `
-                    <div class="min-h-screen bg-gray-50">
-                        <div class="bg-cm-escuro text-white shadow-lg">
-                            <div class="max-w-7xl mx-auto px-4 py-6">
-                                <h1 class="text-3xl font-bold">⚙️ Configurações</h1>
-                            </div>
-                        </div>
-
-                        <div class="bg-white shadow border-b">
-                            <div class="max-w-7xl mx-auto flex gap-4 px-4 py-3 overflow-x-auto">
-                                <button onclick="app.paginaAtual = 'home'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">🏠 Início</button>
-                                <button onclick="app.paginaAtual = 'colaboradores'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">👥 Colaboradores</button>
-                                <button onclick="app.paginaAtual = 'dashboard'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-gray-200 text-gray-700">📊 Dashboard</button>
-                                <button onclick="app.paginaAtual = 'config'; app.render();" class="px-4 py-2 rounded-lg font-semibold bg-cm-laranja text-white">⚙️ Config</button>
-                            </div>
-                        </div>
-
-                        <div class="max-w-4xl mx-auto px-4 py-8">
-                            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
-                                <h2 class="text-2xl font-bold text-cm-escuro mb-6">Meta Mensal</h2>
-                                
-                                <div class="mb-6">
-                                    <label class="block text-sm font-semibold mb-2">💰 Meta de Vendas (R$)</label>
-                                    <input type="number" id="inputMeta" value="${this.metaMensal}" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-xl font-bold" placeholder="450000">
-                                </div>
-
-                                <button onclick="app.atualizarMeta()" class="bg-cm-laranja hover:opacity-90 text-white px-8 py-3 rounded-lg font-bold text-lg w-full">
-                                    💾 Salvar Meta
-                                </button>
-                            </div>
-
-                            <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
-                                <h2 class="text-2xl font-bold text-cm-escuro mb-4">Dados do Sistema</h2>
-                                
-                                <div class="space-y-4">
-                                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                        <div>
-                                            <div class="font-bold">Colaboradores Cadastrados</div>
-                                            <div class="text-sm text-gray-600">${this.colaboradores.length} registros</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                        <div>
-                                            <div class="font-bold">Armazenamento</div>
-                                            <div class="text-sm text-gray-600">LocalStorage do navegador</div>
-                                        </div>
-                                    </div>
-
-                                    <button onclick="app.exportarDados()" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-bold">
-                                        📥 Exportar Dados (JSON)
-                                    </button>
-
-                                    <button onclick="app.limparDados()" class="w-full bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-bold">
-                                        🗑️ Limpar Todos os Dados
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg">
-                                <h3 class="text-lg font-bold text-blue-800 mb-2">💡 Sobre o Sistema</h3>
-                                <p class="text-gray-700 text-sm">
-                                    Sistema de Avaliação de Desempenho baseado nas 8 Ferramentas fundamentais de gestão de pessoas.
-                                    Todos os dados são armazenados localmente no seu navegador.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // ===== FUNÇÕES AUXILIARES =====
-
-            atualizarMeta() {
-                const valor = parseFloat(document.getElementById('inputMeta').value);
-                if (valor > 0) {
-                    this.metaMensal = valor;
-                    this.salvarDados();
-                    alert('✅ Meta atualizada com sucesso!');
-                    this.render();
-                } else {
-                    alert('❌ Digite um valor válido!');
-                }
-            }
-
-            exportarDados() {
-                const dados = {
-                    metaMensal: this.metaMensal,
-                    colaboradores: this.colaboradores,
-                    exportadoEm: new Date().toISOString()
-                };
-                
-                const dataStr = JSON.stringify(dados, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `avaliacao-squad-${new Date().toISOString().split('T')[0]}.json`;
-                link.click();
-                
-                alert('✅ Dados exportados com sucesso!');
-            }
-
-            limparDados() {
-                if (confirm('⚠️ ATENÇÃO! Isso irá apagar TODOS os dados. Deseja continuar?')) {
-                    if (confirm('Confirma a exclusão de TODOS os colaboradores e configurações?')) {
-                        localStorage.clear();
-                        this.colaboradores = [];
-                        this.metaMensal = 450000;
-                        alert('✅ Todos os dados foram apagados!');
-                        this.paginaAtual = 'home';
-                        this.render();
-                    }
-                }
-            }
-        }
-
-        const app = new AvaliacaoDesempenho();
-    </script>
-</body>
-</html>
+// Continua no próximo arquivo...
