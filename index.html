@@ -848,51 +848,7 @@ class AvaliacaoDesempenho {
 
     // Continua na parte 3...
 }
-            // ===== FUNÇÕES AUXILIARES =====
-
-            atualizarMeta() {
-                const valor = parseFloat(document.getElementById('inputMeta').value);
-                if (valor > 0) {
-                    this.metaMensal = valor;
-                    this.salvarDados();
-                    alert('✅ Meta atualizada com sucesso!');
-                    this.render();
-                } else {
-                    alert('❌ Digite um valor válido!');
-                }
-            }
-
-            exportarDados() {
-                const dados = {
-                    metaMensal: this.metaMensal,
-                    colaboradores: this.colaboradores,
-                    exportadoEm: new Date().toISOString()
-                };
-                
-                const dataStr = JSON.stringify(dados, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `avaliacao-squad-${new Date().toISOString().split('T')[0]}.json`;
-                link.click();
-                
-                alert('✅ Dados exportados com sucesso!');
-            }
-
-            limparDados() {
-                if (confirm('⚠️ ATENÇÃO! Isso irá apagar TODOS os dados. Deseja continuar?')) {
-                    if (confirm('Confirma a exclusão de TODOS os colaboradores e configurações?')) {
-                        localStorage.clear();
-                        this.colaboradores = [];
-                        this.metaMensal = 450000;
-                        alert('✅ Todos os dados foram apagados!');
-                        this.paginaAtual = 'home';
-                        this.render();
-                    }
-                }
-            }
-        }
+      
 
         const app = new AvaliacaoDesempenho();
     </script>
