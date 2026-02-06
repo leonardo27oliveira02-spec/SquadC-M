@@ -395,3 +395,378 @@ const BIBLIOTECA_CONHECIMENTO = {
 };
 
 // Continua no próximo arquivo...
+                    // PARTE 2 - LÓGICA DA APLICAÇÃO
+
+class AvaliacaoDesempenho {
+    constructor() {
+        this.paginaAtual = 'home';
+        this.metaMensal = 450000;
+        this.colaboradores = [];
+        this.colaboradorEditando = null;
+        this.guiaAberto = null;
+        
+        this.carregarDados();
+        this.render();
+    }
+
+    // ===== GESTÃO DE COLABORADORES =====
+    
+    adicionarColaborador() {
+        const nome = prompt('Nome do Colaborador:');
+        if (!nome) return;
+        
+        const cargo = prompt('Cargo:', 'Consultor de Vendas') || 'Consultor';
+
+        const colaborador = {
+            id: Date.now(),
+            nome,
+            cargo,
+            kpis: { entregas: 0, produtividade: 0, erros: 0 },
+            metas: { especifica: '', mensuravel: 0, atingivel: '', relevante: '', temporal: '' },
+            cha: { conhecimento: 3, habilidade: 3, atitude: 3 },
+            competencias: { responsabilidade: 3, comunicacao: 3, organizacao: 3, proatividade: 3, trabalhoEquipe: 3, lideranca: 3 },
+            feedback: { funcionando: '', melhorar: '', impacto: '', ajuste: '' },
+            avaliacao360: { autoavaliacao: 3, lider: 3, pares: 3, subordinados: 3 },
+            pdi: { pontoForte: '', pontoMelhoria: '', acaoPratica: '', prazo: '', responsavel: '' }
+        };
+
+        this.colaboradores.push(colaborador);
+        this.salvarDados();
+        alert(`✅ ${nome} adicionado! Clique em "Avaliar" para preencher os dados.`);
+        this.paginaAtual = 'colaboradores';
+        this.render();
+    }
+
+    editarColaborador(id) {
+        this.colaboradorEditando = JSON.parse(JSON.stringify(this.colaboradores.find(c => c.id === id)));
+        this.paginaAtual = 'editar';
+        this.guiaAberto = null;
+        this.render();
+    }
+
+    excluirColaborador(id) {
+        const colab = this.colaboradores.find(c => c.id === id);
+        if (confirm(`Deseja excluir ${colab.nome}?`)) {
+            this.colaboradores = this.colaboradores.filter(c => c.id !== id);
+            this.salvarDados();
+            this.render();
+        }
+    }
+
+    salvarEdicao() {
+        const index = this.colaboradores.findIndex(c => c.id === this.colaboradorEditando.id);
+        if (index !== -1) {
+            this.colaboradores[index] = this.colaboradorEditando;
+            this.salvarDados();
+            alert('✅ Avaliação salva com sucesso!');
+        }
+        this.colaboradorEditando = null;
+        this.paginaAtual = 'colaboradores';
+        this.render();
+    }
+
+    // ===== CÁLCULOS =====
+
+    calcularMediaGeral(colaborador) {
+        const mediaKPIs = (colaborador.kpis.entregas + colaborador.kpis.produtividade) / 2;
+        const mediaCHA = (colaborador.cha.conhecimento + colaborador.cha.habilidade + colaborador.cha.atitude) / 3;
+        const mediaComp = Object.values(colaborador.competencias).reduce((a, b) => a + b, 0) / 6;
+        const media360 = Object.values(colaborador.avaliacao360).reduce((a, b) => a + b, 0) / 4;
+        
+        return ((mediaKPIs + mediaCHA + mediaComp + media360) / 4).toFixed(1);
+    }
+
+    determinarMatrizDesempenho(colaborador) {
+        const entrega = colaborador.kpis.produtividade;
+        const cultura = parseFloat(this.calcularMediaGeral(colaborador));
+
+        if (entrega >= 80 && cultura >= 3.5) return 'Desenvolver';
+        if (entrega >= 80 && cultura < 3.5) return 'Alerta';
+        if (entrega < 80 && cultura >= 3.5) return 'Treinar';
+        return 'Desligar';
+    }
+
+    getCorMatriz(tipo) {
+        const cores = {
+            'Desenvolver': 'bg-green-100 border-green-500 text-green-800',
+            'Alerta': 'bg-yellow-100 border-yellow-500 text-yellow-800',
+            'Treinar': 'bg-blue-100 border-blue-500 text-blue-800',
+            'Desligar': 'bg-red-100 border-red-500 text-red-800'
+        };
+        return cores[tipo] || 'bg-gray-100 border-gray-500';
+    }
+
+    calcularProgressoMeta() {
+        const totalVendido = this.colaboradores.reduce((sum, c) => sum + (c.metas.mensuravel || 0), 0);
+        const percentual = (totalVendido / this.metaMensal) * 100;
+        return {
+            total: totalVendido,
+            percentual: percentual.toFixed(1),
+            faltam: this.metaMensal - totalVendido
+        };
+    }
+
+    // ===== PERSISTÊNCIA =====
+
+    salvarDados() {
+        localStorage.setItem('avaliacaoColaboradores', JSON.stringify(this.colaboradores));
+        localStorage.setItem('metaMensal', this.metaMensal);
+    }
+
+    carregarDados() {
+        const dados = localStorage.getItem('avaliacaoColaboradores');
+        if (dados) this.colaboradores = JSON.parse(dados);
+        
+        const meta = localStorage.getItem('metaMensal');
+        if (meta) this.metaMensal = parseFloat(meta);
+    }
+
+    toggleGuia(secao) {
+        this.guiaAberto = this.guiaAberto === secao ? null : secao;
+        this.render();
+    }
+
+    atualizarMeta() {
+        const valor = parseFloat(document.getElementById('inputMeta').value);
+        if (valor > 0) {
+            this.metaMensal = valor;
+            this.salvarDados();
+            alert('✅ Meta atualizada!');
+            this.render();
+        } else {
+            alert('❌ Digite um valor válido!');
+        }
+    }
+
+    exportarDados() {
+        const dados = {
+            metaMensal: this.metaMensal,
+            colaboradores: this.colaboradores,
+            exportadoEm: new Date().toISOString()
+        };
+        
+        const dataStr = JSON.stringify(dados, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `avaliacao-squad-${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        
+        alert('✅ Dados exportados!');
+    }
+
+    limparDados() {
+        if (confirm('⚠️ ATENÇÃO! Isso irá apagar TODOS os dados. Deseja continuar?')) {
+            if (confirm('Confirma a exclusão?')) {
+                localStorage.clear();
+                this.colaboradores = [];
+                this.metaMensal = 450000;
+                alert('✅ Dados apagados!');
+                this.paginaAtual = 'home';
+                this.render();
+            }
+        }
+    }
+
+    // ===== RENDERIZAÇÃO PRINCIPAL =====
+
+    render() {
+        const app = document.getElementById('app');
+
+        if (this.paginaAtual === 'home') {
+            app.innerHTML = this.renderHome();
+        } else if (this.paginaAtual === 'colaboradores') {
+            app.innerHTML = this.renderColaboradores();
+        } else if (this.paginaAtual === 'editar') {
+            app.innerHTML = this.renderEditar();
+        } else if (this.paginaAtual === 'dashboard') {
+            app.innerHTML = this.renderDashboard();
+        } else if (this.paginaAtual === 'treinamento') {
+            app.innerHTML = this.renderTreinamento();
+        } else if (this.paginaAtual === 'config') {
+            app.innerHTML = this.renderConfig();
+        }
+    }
+
+    renderMenu(ativo) {
+        const menus = [
+            { id: 'home', label: '🏠 Início' },
+            { id: 'colaboradores', label: '👥 Colaboradores' },
+            { id: 'dashboard', label: '📊 Dashboard' },
+            { id: 'treinamento', label: '🎓 Treinamento' },
+            { id: 'config', label: '⚙️ Config' }
+        ];
+
+        return `
+            <div class="bg-white shadow border-b sticky top-0 z-40">
+                <div class="max-w-7xl mx-auto flex gap-4 px-4 py-3 overflow-x-auto">
+                    ${menus.map(m => `
+                        <button onclick="app.paginaAtual = '${m.id}'; app.render();" 
+                            class="px-4 py-2 rounded-lg font-semibold whitespace-nowrap ${ativo === m.id ? 'bg-cm-laranja text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">
+                            ${m.label}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    renderHome() {
+        const progresso = this.calcularProgressoMeta();
+        
+        return `
+            <div class="min-h-screen bg-gray-50">
+                <div class="bg-cm-escuro text-white shadow-lg">
+                    <div class="max-w-7xl mx-auto px-4 py-6">
+                        <h1 class="text-3xl font-bold">🎓 C&M Leadership Academy</h1>
+                        <p class="text-sm mt-2 opacity-90">Avaliação de Desempenho + Treinamento Profissional de Líderes</p>
+                    </div>
+                </div>
+
+                ${this.renderMenu('home')}
+
+                <div class="max-w-7xl mx-auto px-4 py-8">
+                    <!-- Meta -->
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg p-8 mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 class="text-3xl font-bold">Meta do Mês</h2>
+                                <p class="text-xl mt-2">R$ ${this.metaMensal.toLocaleString('pt-BR')}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-5xl font-bold">${progresso.percentual}%</div>
+                                <div class="text-sm mt-1">${this.colaboradores.length} colaboradores</div>
+                            </div>
+                        </div>
+                        <div class="w-full bg-white bg-opacity-30 rounded-full h-6 mb-3">
+                            <div class="bg-white h-6 rounded-full flex items-center justify-center text-orange-600 font-bold text-sm" style="width: ${Math.min(progresso.percentual, 100)}%">
+                                R$ ${progresso.total.toLocaleString('pt-BR')}
+                            </div>
+                        </div>
+                        <p class="text-sm">Faltam R$ ${progresso.faltam.toLocaleString('pt-BR')} • Média: R$ ${this.colaboradores.length > 0 ? Math.round(this.metaMensal / this.colaboradores.length).toLocaleString('pt-BR') : '0'}/pessoa</p>
+                    </div>
+
+                    <!-- Ferramentas -->
+                    <h2 class="text-2xl font-bold text-cm-escuro mb-6">🎯 8 Ferramentas de Avaliação</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        ${['KPIs', 'SMART', 'CHA', 'Competências', 'Feedback', '360°', 'Matriz', 'PDI'].map((f, i) => `
+                            <div class="card-ferramenta bg-white rounded-xl shadow-lg p-6 border-t-4 border-cm-laranja">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-12 h-12 bg-cm-laranja rounded-full flex items-center justify-center text-white text-xl font-bold">${i+1}</div>
+                                    <h3 class="text-lg font-bold text-cm-escuro">${f}</h3>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <button onclick="app.adicionarColaborador()" class="bg-cm-laranja hover:opacity-90 text-white p-8 rounded-xl font-bold text-xl shadow-lg">
+                            ➕ Adicionar Colaborador
+                        </button>
+                        <button onclick="app.paginaAtual = 'treinamento'; app.render();" class="bg-cm-escuro hover:opacity-90 text-white p-8 rounded-xl font-bold text-xl shadow-lg">
+                            🎓 Academia de Liderança
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderColaboradores() {
+        return `
+            <div class="min-h-screen bg-gray-50">
+                <div class="bg-cm-escuro text-white shadow-lg">
+                    <div class="max-w-7xl mx-auto px-4 py-6">
+                        <h1 class="text-3xl font-bold">👥 Gestão de Colaboradores</h1>
+                    </div>
+                </div>
+
+                ${this.renderMenu('colaboradores')}
+
+                <div class="max-w-7xl mx-auto px-4 py-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-cm-escuro">Squad (${this.colaboradores.length})</h2>
+                        <button onclick="app.adicionarColaborador()" class="bg-cm-laranja hover:opacity-90 text-white px-6 py-3 rounded-lg font-bold">
+                            ➕ Novo Colaborador
+                        </button>
+                    </div>
+
+                    ${this.colaboradores.length === 0 ? `
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+                            <h3 class="text-lg font-bold text-yellow-800 mb-2">🎯 Comece Aqui!</h3>
+                            <p class="text-gray-700 mb-4">Adicione seus colaboradores para começar.</p>
+                            <button onclick="app.adicionarColaborador()" class="bg-cm-laranja text-white px-6 py-2 rounded-lg font-semibold">
+                                ➕ Adicionar Primeiro Colaborador
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${this.colaboradores.map(c => this.renderCardColaborador(c)).join('')}
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+    }
+
+    renderCardColaborador(c) {
+        const media = this.calcularMediaGeral(c);
+        const matriz = this.determinarMatrizDesempenho(c);
+        const cor = this.getCorMatriz(matriz);
+        
+        return `
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border-t-4 border-cm-laranja hover:shadow-2xl transition">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-cm-escuro">${c.nome}</h3>
+                            <p class="text-gray-600 text-sm">${c.cargo}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-cm-laranja">${media}</div>
+                            <div class="text-xs text-gray-500">Média</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="px-4 py-2 rounded-lg text-center font-bold text-sm ${cor}">
+                            ${matriz}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 mb-4 text-center text-xs">
+                        <div>
+                            <div class="font-bold text-lg text-cm-laranja">${c.kpis.produtividade}%</div>
+                            <div class="text-gray-600">Produtividade</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg text-cm-laranja">${c.cha.atitude}/5</div>
+                            <div class="text-gray-600">Atitude</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg text-cm-laranja">R$ ${(c.metas.mensuravel || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</div>
+                            <div class="text-gray-600">Meta</div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="app.editarColaborador(${c.id})" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg font-semibold text-sm">
+                            ✏️ Avaliar
+                        </button>
+                        <button onclick="app.excluirColaborador(${c.id})" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Continua na parte 3...
+}
+
+// Inicializa o app
+const app = new AvaliacaoDesempenho();
