@@ -115,7 +115,7 @@
                 return {
                     kpis: {
                         titulo: "📊 KPIs - Como Medir Desempenho",
-                        conteudo: \`
+                        conteudo: `
                             <h3 class="text-2xl font-bold mb-4">1. ENTREGAS (%)</h3>
                             <div class="dica-box">
                                 <strong>💡 Fórmula:</strong> (Tarefas Concluídas / Tarefas Previstas) × 100
@@ -165,12 +165,12 @@
                                     Celebre melhorias, não só resultados perfeitos.
                                 </div>
                             </div>
-                        \`
+                        `
                     },
                     
                     smart: {
                         titulo: "🎯 SMART - Metas Inteligentes",
-                        conteudo: \`
+                        conteudo: `
                             <div class="space-y-6">
                                 <div class="border-l-4 border-orange-500 pl-4">
                                     <h3 class="text-xl font-bold">S - ESPECÍFICA</h3>
@@ -247,12 +247,12 @@
                                     </ol>
                                 </div>
                             </div>
-                        \`
+                       `
                     },
 
                     cha: {
                         titulo: "🧠 CHA - Conhecimento, Habilidade e Atitude",
-                        conteudo: \`
+                        conteudo: `
                             <div class="grid grid-cols-1 gap-6">
                                 <div class="bg-blue-50 p-6 rounded-lg">
                                     <h3 class="text-2xl font-bold text-blue-800 mb-3">🧠 CONHECIMENTO</h3>
@@ -367,12 +367,12 @@
                                     </div>
                                 </div>
                             </div>
-                        \`
+                        `
                     },
 
                     feedback: {
                         titulo: "💬 Feedback em 4 Etapas",
-                        conteudo: \`
+                        conteudo: `
                             <div class="space-y-6">
                                 <div class="border-l-4 border-green-500 bg-green-50 p-6 rounded">
                                     <h3 class="text-2xl font-bold text-green-800 mb-3">1️⃣ O QUE ESTÁ FUNCIONANDO</h3>
@@ -493,12 +493,12 @@
                                     </div>
                                 </div>
                             </div>
-                        \`
+                        `
                     },
 
                     matriz: {
                         titulo: "📊 Matriz: Desempenho x Comportamento",
-                        conteudo: \`
+                        conteudo: `
                             <div class="mb-6 bg-blue-50 p-6 rounded-lg">
                                 <h3 class="text-2xl font-bold mb-3">Como Funciona</h3>
                                 <p class="mb-2"><strong>Eixo X:</strong> ENTREGA (Produtividade, Resultados, KPIs)</p>
@@ -640,7 +640,7 @@
                                 <strong class="text-red-800">⚠️ ERRO COMUM:</strong> Manter "Alerta" e "Desligar" 
                                 por muito tempo esperando mudança. Seja decisivo!
                             </div>
-                        \`
+                       `
                     }
                 };
             }
@@ -652,7 +652,7 @@
                 const modal = document.getElementById('modalGuia');
                 const content = document.getElementById('modalContent');
                 
-                content.innerHTML = \`
+                content.innerHTML = `
                     <div class="p-8">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-3xl font-bold" style="color: var(--cor-principal)">\${guia.titulo}</h2>
@@ -661,7 +661,7 @@
                         </div>
                         \${guia.conteudo}
                     </div>
-                \`;
+               `;
                 
                 modal.style.display = 'block';
             }
@@ -778,7 +778,7 @@ render() {
             renderHome() {
                 const p = this.progresso();
                 
-                return \`
+                return `
                     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50">
                         <div class="bg-gradient-to-r from-orange-600 to-orange-800 text-white shadow-xl">
                             <div class="max-w-7xl mx-auto px-4 py-8">
@@ -846,7 +846,7 @@ render() {
                             </div>
                         </div>
                     </div>
-                \`;
+               `;
             }
 
             render8Cards() {
@@ -861,7 +861,7 @@ render() {
                     { num: 8, nome: 'PDI', icon: '📈', desc: 'Plano de Desenvolvimento', chave: 'pdi' }
                 ];
 
-                return tools.map(t => \`
+                return tools.map(t => `
                     <div class="card-tool bg-white rounded-xl shadow-lg p-6 border-t-4 border-orange-500 relative">
                         <div class="absolute top-4 right-4">
                             <span onclick="app.abrirGuia('\${t.chave}')" class="badge-help">?</span>
@@ -879,11 +879,11 @@ render() {
                             📚 Ver Guia Completo
                         </button>
                     </div>
-                \`).join('');
+                `).join('');
             }
 
             renderColaboradores() {
-                return \`
+                return `
                     <div class="min-h-screen bg-gray-50">
                         <div class="bg-gradient-to-r from-orange-600 to-orange-800 text-white shadow-xl">
                             <div class="max-w-7xl mx-auto px-4 py-6">
@@ -908,19 +908,19 @@ render() {
                                 </button>
                             </div>
 
-                            \${this.colaboradores.length === 0 ? \`
+                            \${this.colaboradores.length === 0 ? `
                                 <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
                                     <h3 class="text-lg font-bold text-yellow-800 mb-2">Nenhum colaborador cadastrado</h3>
                                     <p>Clique em "Novo Colaborador" para começar!</p>
                                 </div>
-                            \` : \`
+                            ` : `
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     \${this.colaboradores.map(c => {
                                         const media = this.mediaGeral(c);
                                         const classe = this.classificar(c);
                                         const cor = this.corMatriz(classe);
                                         
-                                        return \`
+                                        return `
                                             <div class="bg-white rounded-xl shadow-lg overflow-hidden border-t-4 border-orange-500">
                                                 <div class="p-6">
                                                     <div class="flex justify-between items-start mb-4">
@@ -965,20 +965,20 @@ render() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        \`;
+                                        `;
                                     }).join('')}
                                 </div>
-                            \`}
+                            `}
                         </div>
                     </div>
-                \`;
+                `;
             }
 
             renderEditar() {
                 const c = this.editando;
                 if (!c) return '';
 
-                return \`
+                return `
                     <div class="min-h-screen bg-gray-50">
                         <div class="bg-gradient-to-r from-orange-600 to-orange-800 text-white shadow-xl">
                             <div class="max-w-7xl mx-auto px-4 py-6">
@@ -1004,11 +1004,11 @@ render() {
                             </div>
                         </div>
                     </div>
-                \`;
+               `;
             }
 
             renderFormAvaliacao(c) {
-                return \`
+                return `
                     <div class="space-y-8">
                         <!-- KPIs -->
                         <div class="border-2 border-orange-500 rounded-lg p-6">
@@ -1207,32 +1207,32 @@ render() {
                             </div>
                         </div>
                     </div>
-                \`;
+                `;
             }
 
             renderEscala(label, valor, caminho) {
-                return \`
+                return `
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <label class="font-semibold">\${label}</label>
                             <span class="text-2xl font-bold text-orange-500">\${valor}/5</span>
                         </div>
                         <div class="flex gap-2">
-                            \${[1,2,3,4,5].map(i => \`
+                            \${[1,2,3,4,5].map(i => `
                                 <button onclick="app.editando.\${caminho} = \${i}; app.render()" 
                                         class="flex-1 py-3 rounded-lg font-bold \${i <= valor ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'}">
                                     \${i}
                                 </button>
-                            \`).join('')}
+                            `).join('')}
                         </div>
                     </div>
-                \`;
+               `;
             }
 
             renderDashboard() {
                 const p = this.progresso();
                 
-                return \`
+                return `
                     <div class="min-h-screen bg-gray-50">
                         <div class="bg-gradient-to-r from-orange-600 to-orange-800 text-white shadow-xl">
                             <div class="max-w-7xl mx-auto px-4 py-6">
@@ -1281,7 +1281,7 @@ render() {
                                     \${['Desenvolver', 'Alerta', 'Treinar', 'Desligar'].map(tipo => {
                                         const colabs = this.colaboradores.filter(c => this.classificar(c) === tipo);
                                         const cor = this.corMatriz(tipo);
-                                        return \`
+                                        return `
                                             <div class="border-2 \${cor} rounded-lg p-4 min-h-[150px]">
                                                 <h3 class="font-bold text-lg mb-2">\${tipo}</h3>
                                                 <div class="text-3xl font-bold mb-2">\${colabs.length}</div>
@@ -1289,7 +1289,7 @@ render() {
                                                     \${colabs.map(c => \`<div>• \${c.nome}</div>\`).join('') || '<div class="text-gray-400">Nenhum</div>'}
                                                 </div>
                                             </div>
-                                        \`;
+                                        `;
                                     }).join('')}
                                 </div>
                             </div>
@@ -1298,14 +1298,14 @@ render() {
                             <div class="bg-white rounded-xl shadow-lg p-8">
                                 <h2 class="text-2xl font-bold mb-6">🏆 Ranking de Desempenho</h2>
                                 
-                                \${this.colaboradores.length === 0 ? \`
+                                \${this.colaboradores.length === 0 ? `
                                     <p class="text-gray-500 text-center py-8">Nenhum colaborador cadastrado</p>
-                                \` : \`
+                                ` : `
                                     <div class="space-y-3">
                                         \${this.colaboradores
                                             .map(c => ({ ...c, media: parseFloat(this.mediaGeral(c)) }))
                                             .sort((a, b) => b.media - a.media)
-                                            .map((c, i) => \`
+                                            .map((c, i) => `
                                                 <div class="flex items-center gap-4 p-4 rounded-lg \${i === 0 ? 'bg-yellow-50 border-2 border-yellow-400' : 'bg-gray-50'}">
                                                     <div class="w-12 h-12 rounded-full \${i === 0 ? 'bg-yellow-400' : i === 1 ? 'bg-gray-300' : i === 2 ? 'bg-orange-300' : 'bg-gray-200'} flex items-center justify-center font-bold text-lg">
                                                         \${i + 1}
@@ -1319,17 +1319,17 @@ render() {
                                                         <div class="text-xs text-gray-500">Média Geral</div>
                                                     </div>
                                                 </div>
-                                            \`).join('')}
+                                            `).join('')}
                                     </div>
-                                \`}
+                                `}
                             </div>
                         </div>
                     </div>
-                \`;
+                `;
             }
 
             renderConfig() {
-                return \`
+                return `
                     <div class="min-h-screen bg-gray-50">
                         <div class="bg-gradient-to-r from-orange-600 to-orange-800 text-white shadow-xl">
                             <div class="max-w-7xl mx-auto px-4 py-6">
@@ -1393,7 +1393,7 @@ render() {
                             </div>
                         </div>
                     </div>
-                \`;
+                `;
             }
 
             // ============= FUNÇÕES AUXILIARES =============
@@ -1421,7 +1421,7 @@ render() {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = \`squad-\${new Date().toISOString().split('T')[0]}.json\`;
+                a.download = `squad-\${new Date().toISOString().split('T')[0]}.json`;
                 a.click();
                 
                 alert('✅ Dados exportados!');
