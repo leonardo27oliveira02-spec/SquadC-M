@@ -93,16 +93,21 @@
         // ============= SISTEMA PRINCIPAL =============
         
         class SistemaAvaliacao {
-            constructor() {
-                this.pagina = 'home';
-                this.metaMensal = 450000;
-                this.colaboradores = [];
-                this.editando = null;
+      constructor() {
+  try {
+    this.pagina = 'home';
+    this.metaMensal = 450000;
+    this.colaboradores = [];
+    this.editando = null;
                 
-                this.guias = this.carregarGuias();
-                this.carregar();
-                this.render();
-            }
+    this.guias = this.carregarGuias();
+    this.carregar();
+    this.render();
+  } catch (e) {
+    console.error("ERRO NO CONSTRUCTOR:", e);
+  }
+}
+
 
             // ============= GUIAS EDUCATIVOS =============
             
@@ -757,8 +762,9 @@
             }
 
             // ============= RENDERIZAÇÃO =============
-
-            render() {
+render() {
+  console.log("RENDER START");
+ {
                 this.carregar();
                 const app = document.getElementById('app');
 
